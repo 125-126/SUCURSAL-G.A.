@@ -608,26 +608,39 @@ input{
   </div>
 </div>
 
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
 <script>
+/* ===============================
+   FIREBASE CONFIG
+================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAfZ0WZVzMxUX2bWmP-iJ0SB-r4q9r026g",
+  authDomain: "sucursal-ga.firebaseapp.com",
+  projectId: "sucursal-ga",
+  storageBucket: "sucursal-ga.firebasestorage.app",
+  messagingSenderId: "692794208494",
+  appId: "1:692794208494:web:9ef044edad3263926943ff"
+};
+
+// Inicializar Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
 /* ===============================
    VARIABLES GLOBALES
 ================================ */
-let ventas = []; // variable global
-
-// ===== FUNCION PARA CARGAR VENTAS DESDE GITHUB =====
-async function cargarVentas() {
-  try {
-    const response = await fetch('ventas.json');
-    ventas = await response.json();
-  } catch (error) {
-    console.error("Error cargando ventas:", error);
-    ventas = [];
-  }
-}
-
-// Cargar al iniciar
-cargarVentas();
+let ventas = [];
 let ventaActual = null;
+
+/* ===============================
+   CARGAR VENTAS EN TIEMPO REAL
+================================ */
+database.ref("ventas").on("value", snapshot => {
+  ventas = snapshot.val() || [];
+});
 
 /* ===== ELEMENTOS DOM ===== */
 const modalPago = document.getElementById("modalPago");
@@ -661,7 +674,7 @@ function limpiarFormulario(){
 }
 
 /* ===============================
-   CALCULAR SALDO REAL
+   CALCULAR SALDO
 ================================ */
 function calcularSaldo(venta){
   const total = Number(venta.precio) * Number(venta.cantidad);
@@ -677,7 +690,7 @@ function calcularSaldo(venta){
 }
 
 /* ===============================
-   BUSCAR TARJETA (AL ESCRIBIR)
+   BUSCAR TARJETA
 ================================ */
 numTarjeta.addEventListener("change", () => {
   const num = numTarjeta.value.trim();
@@ -704,9 +717,6 @@ numTarjeta.addEventListener("change", () => {
 
   saldoPendiente.value = saldo.toFixed(2);
   saldoRestante.value = saldo.toFixed(2);
-
-  saldoPendiente.style.background = "#fdecea";
-  saldoPendiente.style.color = "#c0392b";
 });
 
 /* ===============================
@@ -721,15 +731,13 @@ abono.addEventListener("input", () => {
 
   if(restante < 0){
     saldoRestante.value = "Monto excede el saldo";
-    saldoRestante.style.color = "#c0392b";
   } else {
     saldoRestante.value = restante.toFixed(2);
-    saldoRestante.style.color = "#1e8449";
   }
 });
 
 /* ===============================
-   GUARDAR PAGO
+   GUARDAR PAGO (FIREBASE)
 ================================ */
 function guardarPago(){
   if(!ventaActual){
@@ -754,15 +762,11 @@ function guardarPago(){
     monto: monto
   });
 
- alert("✅ Pago registrado correctamente.\n⚠️ Para que otros vean este pago, sube el archivo ventas.json actualizado a GitHub.");
+  // 🔥 GUARDAR EN FIREBASE
+  database.ref("ventas").set(ventas);
 
   alert("✅ Pago registrado correctamente");
   cerrarModal();
-
-  // Actualizar estado de cuenta si modal está abierto
-  if (modalEstado.style.display === "flex") {
-    mostrarEstadoCuenta(ventaActual);
-  }
 }
 
 /* ===============================
@@ -775,8 +779,7 @@ function abrirBusquedaEstado(){
 function cerrarEstado(){
   modalEstado.style.display = "none";
   buscarTarjeta.value = "";
-  const tbody = document.querySelector("#tablaEstado tbody");
-  tbody.innerHTML = ""; // Limpiar tabla al cerrar
+  document.querySelector("#tablaEstado tbody").innerHTML = "";
 }
 
 function buscarEstadoCuenta(){
@@ -795,19 +798,18 @@ function buscarEstadoCuenta(){
 }
 
 /* ===============================
-   MOSTRAR ESTADO DE CUENTA EN TABLA
+   MOSTRAR ESTADO DE CUENTA
 ================================ */
 function mostrarEstadoCuenta(venta) {
   const tbody = document.querySelector("#tablaEstado tbody");
-  tbody.innerHTML = ""; // Limpiar tabla
+  tbody.innerHTML = "";
 
   const producto = venta.producto || "Producto";
-  let saldo = Number(venta.precio) * Number(venta.cantidad); // saldo inicial total
+  let saldo = Number(venta.precio) * Number(venta.cantidad);
 
-  // Fila inicial: Venta
   const trVenta = document.createElement("tr");
   trVenta.innerHTML = `
-    <td>${venta.fecha ? new Date(venta.fecha).toLocaleDateString() : new Date().toLocaleDateString()}</td>
+    <td>${new Date().toLocaleDateString()}</td>
     <td>${producto}</td>
     <td>Venta</td>
     <td>${saldo.toFixed(2)}</td>
@@ -816,56 +818,33 @@ function mostrarEstadoCuenta(venta) {
   `;
   tbody.appendChild(trVenta);
 
-  // Prima (si existe)
   if (venta.prima) {
-    const debe = saldo; // saldo antes del movimiento
-    const abonoPrima = Number(venta.prima);
-    saldo = saldo - abonoPrima; // nuevo saldo después del abono
-    const trPrima = document.createElement("tr");
-    trPrima.innerHTML = `
-      <td>${venta.fecha ? new Date(venta.fecha).toLocaleDateString() : new Date().toLocaleDateString()}</td>
-      <td>${producto}</td>
-      <td>Prima</td>
-      <td>${debe.toFixed(2)}</td>
-      <td>${abonoPrima.toFixed(2)}</td>
-      <td>${saldo.toFixed(2)}</td>
-    `;
-    tbody.appendChild(trPrima);
+    saldo -= Number(venta.prima);
   }
 
-  // Abonos
-  if (venta.abonos && venta.abonos.length > 0) {
-    venta.abonos.forEach(abonoItem => {
-      const debe = saldo; // saldo antes del pago
-      const abonoMonto = Number(abonoItem.monto);
-      saldo = saldo - abonoMonto; // saldo después del pago
-      const trAbono = document.createElement("tr");
-      trAbono.innerHTML = `
-        <td>${abonoItem.fecha ? new Date(abonoItem.fecha).toLocaleDateString() : new Date().toLocaleDateString()}</td>
+  if (venta.abonos) {
+    venta.abonos.forEach(a => {
+      saldo -= Number(a.monto);
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${new Date(a.fecha).toLocaleDateString()}</td>
         <td>${producto}</td>
         <td>Abono</td>
-        <td>${debe.toFixed(2)}</td>
-        <td>${abonoMonto.toFixed(2)}</td>
+        <td></td>
+        <td>${Number(a.monto).toFixed(2)}</td>
         <td>${saldo.toFixed(2)}</td>
       `;
-      tbody.appendChild(trAbono);
+      tbody.appendChild(tr);
     });
   }
 
-  // Abrir modal automáticamente
   modalEstado.style.display = "flex";
 }
-function exportarJSON() {
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(ventas, null, 2));
-  const dlAnchorElem = document.createElement('a');
-  dlAnchorElem.setAttribute("href", dataStr);
-  dlAnchorElem.setAttribute("download", "ventas.json");
-  dlAnchorElem.click();
-}
 </script>
-
+  
 </body>
 </html>
+
 
 
 
