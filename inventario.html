@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventario | Comercial G.A.</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Poppins',Arial;
+  min-height:100vh;
+  display:flex;
+  background:linear-gradient(135deg,#0d1b2a,#1b263b,#415a77);
+  color:#fff;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:250px;
+  background:#0d1b2a;
+  padding-top:25px;
+  border-right:2px solid #f1c40f;
+}
+
+.sidebar a{
+  display:block;
+  width:90%;
+  margin:6px auto;
+  padding:12px;
+  text-align:center;
+  color:#fff;
+  text-decoration:none;
+  background:rgba(255,255,255,.06);
+  border-radius:8px;
+  font-weight:600;
+}
+
+.sidebar a:hover{
+  background:#f1c40f;
+  color:#1b263b;
+}
+
+/* ===== CONTENIDO ===== */
+.main-content{
+  flex:1;
+  padding:40px;
+}
+
+h1{
+  color:#f1c40f;
+  text-align:center;
+  margin-bottom:20px;
+}
+
+/* ===== TABLA ===== */
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:rgba(255,255,255,.05);
+}
+
+th, td{
+  border:1px solid rgba(255,255,255,.2);
+  padding:10px;
+  text-align:center;
+}
+
+th{
+  background:#f1c40f;
+  color:#1b263b;
+}
+
+tr:hover{
+  background:rgba(255,255,255,.08);
+}
+
+/* ===== BOTONES ===== */
+.btn-delete{
+  background:#e74c3c;
+  color:#fff;
+  border:none;
+  padding:6px 10px;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.btn-delete:hover{
+  background:#c0392b;
+}
+
+/* ===== MENSAJE VACÍO ===== */
+.empty{
+  text-align:center;
+  margin-top:20px;
+  opacity:.7;
+}
+
+.btn-calc{
+  background:#27ae60;
+  color:#fff;
+  border:none;
+  padding:12px 20px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+  margin-bottom:20px;
+}
+
+.btn-calc:hover{
+  background:#219150;
+}
+
+/* ===== MODAL ===== */
+.modal{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.7);
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-content{
+  background:#1b263b;
+  padding:25px;
+  border-radius:10px;
+  width:350px;
+}
+
+.modal-content h2{
+  text-align:center;
+  color:#f1c40f;
+  margin-bottom:15px;
+}
+
+.modal-content label{
+  display:block;
+  margin-top:10px;
+  font-size:14px;
+}
+
+.modal-content input{
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  border-radius:5px;
+  border:none;
+}
+
+.resultado{
+  margin-top:15px;
+  text-align:center;
+  font-weight:600;
+}
+
+.btn-close{
+  background:#e74c3c;
+  color:#fff;
+  border:none;
+  padding:8px;
+  width:100%;
+  border-radius:5px;
+  margin-top:10px;
+  cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+  <a href="index.html">INICIO</a>
+  <a href="compras.html">COMPRAS</a>
+  <a href="inventario.html">INVENTARIO</a>
+</div>
+
+<!-- ===== CONTENIDO ===== -->
+<div class="main-content">
+
+<button class="btn-calc" onclick="abrirCalculadora()">
+  📊 Calculadora de Precio de Venta
+</button>
+
+  <h1>INVENTARIO GENERAL</h1>
+
+  <table id="tablaInventario">
+ <thead>
+  <tr>
+    <th>Factura</th>
+    <th>Código</th>
+    <th>Producto</th>
+    <th>Cantidad</th>
+    <th>Precio Unit.</th>
+    <th>Costo Envío</th>
+    <th>Costo Real</th>
+    <th>Total Compra</th>
+    <th>Precio Venta</th>
+    <th>Comisión</th>
+    <th>Ganancia</th>
+    <th>Ubicación</th>
+    <th>Acción</th>
+  </tr>
+</thead>
+  <tbody></tbody>
+</table>
+
+  <p class="empty" id="mensajeVacio">No hay productos en inventario</p>
+</div>
+
+
+<script>
+// ===============================
+// ELEMENTOS
+// ===============================
+const tablaBody = document.querySelector("#tablaInventario tbody");
+const mensajeVacio = document.getElementById("mensajeVacio");
+
+// ===============================
+// DATA
+// ===============================
+let inventario = JSON.parse(localStorage.getItem("inventario")) || [];
+
+// ===============================
+// MOSTRAR INVENTARIO
+// ===============================
+function mostrarInventario() {
+  tablaBody.innerHTML = "";
+
+  if (inventario.length === 0) {
+    mensajeVacio.style.display = "block";
+    return;
+  }
+
+  mensajeVacio.style.display = "none";
+
+  inventario.forEach((item, index) => {
+
+    const factura = item.factura || "-";
+    const codigo = item.codigo || "-";
+    const producto = item.producto || "";
+    const cantidad = Number(item.cantidad) || 1;
+
+    const precioUnit = Number(item.precio) || 0;
+    const costoEnvio = Number(item.gastoEnvio) || 0;
+
+    // COSTO REAL UNITARIO
+    const costoRealUnit =
+      ((precioUnit * cantidad) + costoEnvio) / cantidad;
+
+    const totalCompra = (precioUnit * cantidad) + costoEnvio;
+
+    const precioVenta = Number(item.precioVenta) || 0;
+    const comision = precioVenta * 0.10;
+    const ganancia = precioVenta - costoRealUnit - comision;
+
+    const fila = document.createElement("tr");
+
+    fila.innerHTML = `
+      <td>${factura}</td>
+      <td>${codigo}</td>
+      <td>${producto}</td>
+      <td>${cantidad}</td>
+      <td>$${precioUnit.toFixed(2)}</td>
+      <td>$${costoEnvio.toFixed(2)}</td>
+      <td style="color:#2ecc71;font-weight:700">$${costoRealUnit.toFixed(2)}</td>
+      <td>$${totalCompra.toFixed(2)}</td>
+      <td>$${precioVenta.toFixed(2)}</td>
+      <td>$${comision.toFixed(2)}</td>
+      <td style="font-weight:700;color:${ganancia >= 0 ? '#2ecc71' : '#e74c3c'}">
+        $${ganancia.toFixed(2)}
+      </td>
+      <td>${item.ubicacion || ""}</td>
+      <td>
+        <button class="btn-delete" onclick="eliminar(${index})">Eliminar</button>
+      </td>
+    `;
+
+    tablaBody.appendChild(fila);
+  });
+}
+
+// ===============================
+// ELIMINAR
+// ===============================
+function eliminar(index) {
+  if (!confirm("¿Eliminar este producto del inventario?")) return;
+
+  inventario.splice(index, 1);
+  localStorage.setItem("inventario", JSON.stringify(inventario));
+  mostrarInventario();
+}
+
+// ===============================
+// CALCULADORA
+// ===============================
+function abrirCalculadora() {
+  document.getElementById("modalCalc").style.display = "flex";
+}
+
+function cerrarCalculadora() {
+  document.getElementById("modalCalc").style.display = "none";
+}
+
+function calcularPrecio() {
+  const costo = Number(document.getElementById("costoCalc").value);
+  const comision = Number(document.getElementById("comisionCalc").value) / 100;
+  const ganancia = Number(document.getElementById("gananciaCalc").value) / 100;
+
+  if (costo <= 0) {
+    alert("Ingrese un costo válido");
+    return;
+  }
+
+  if ((comision + ganancia) >= 1) {
+    alert("Comisión + ganancia no puede ser 100% o más");
+    return;
+  }
+
+  const precio = costo / (1 - comision - ganancia);
+  const comisionMonto = precio * comision;
+  const gananciaMonto = precio - costo - comisionMonto;
+
+  document.getElementById("resultadoCalc").innerHTML = `
+    Precio de Venta: <b>$${precio.toFixed(2)}</b><br>
+    Comisión: $${comisionMonto.toFixed(2)}<br>
+    Ganancia Real: $${gananciaMonto.toFixed(2)}
+  `;
+}
+
+// ===============================
+// INIT
+// ===============================
+mostrarInventario();
+</script>
+
+
+<div class="modal" id="modalCalc">
+  <div class="modal-content">
+    <h2>Calculadora de Precio</h2>
+
+    <label>Costo del producto ($)</label>
+    <input type="number" id="costoCalc" step="0.01">
+
+    <label>Comisión vendedor (%)</label>
+    <input type="number" id="comisionCalc" value="10">
+
+    <label>Ganancia deseada (%)</label>
+    <input type="number" id="gananciaCalc" value="30">
+
+    <div class="resultado" id="resultadoCalc"></div>
+
+    <button class="btn-calc" onclick="calcularPrecio()">Calcular</button>
+    <button class="btn-close" onclick="cerrarCalculadora()">Cerrar</button>
+  </div>
+</div>
+
+</body>
+</html>

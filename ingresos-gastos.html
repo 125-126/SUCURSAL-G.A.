@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingresos y Gastos | Comercial G.A.</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{margin:0;font-family:'Poppins';display:flex;min-height:100vh;background:linear-gradient(135deg,#0d1b2a,#1b263b,#415a77);color:#fff}
+.sidebar{width:250px;background:#0d1b2a;padding-top:25px;border-right:2px solid #f1c40f;display:flex;flex-direction:column;align-items:center;}
+.sidebar h2{color:#f1c40f;margin-bottom:25px;font-weight:800;}
+.sidebar a{width:90%;margin:6px 0;padding:12px;text-align:center;text-decoration:none;color:#fff;background:rgba(255,255,255,.06);border-radius:8px;font-weight:600;}
+.sidebar a:hover{background:#f1c40f;color:#1b263b;}
+.main-content{flex:1;padding:40px;overflow-x:auto;}
+h1{color:#f1c40f;margin-bottom:20px;text-align:center;}
+.table-container{width:100%;max-width:900px;margin:auto;background:rgba(255,255,255,.05);padding:20px;border-radius:15px;}
+table{width:100%;border-collapse:collapse;margin-bottom:40px;}
+th,td{border:1px solid rgba(255,255,255,.2);padding:8px;text-align:left}
+th{background:#f1c40f;color:#1b263b;text-align:left}
+tr:hover{background:rgba(255,255,255,.1)}
+.positive{color:#27ae60;font-weight:600;}
+.negative{color:#e74c3c;font-weight:600;}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>COMERCIAL G.A.</h2>
+  <a href="index.html">INICIO</a>
+  <a href="ingresos-gastos.html">INGRESOS Y GASTOS</a>
+  <a href="ventas.html">VENTAS</a>
+  <a href="compras.html">COMPRAS</a>
+</div>
+
+<div class="main-content">
+  <h1>ESTADO DE RESULTADOS</h1>
+  <div class="table-container">
+    <table>
+      <tbody>
+        <tr>
+          <th>Concepto</th>
+          <th>Monto ($)</th>
+        </tr>
+        <tr>
+          <td>Ingresos por Ventas</td>
+          <td id="ingresos">0.00</td>
+        </tr>
+        <tr>
+          <td>Costos de Compras</td>
+          <td id="costos">0.00</td>
+        </tr>
+        <tr>
+          <td>Gastos de Envío</td>
+          <td id="gastosEnvio">0.00</td>
+        </tr>
+        <tr>
+          <td>Otros Gastos</td>
+          <td id="otrosGastos">0.00</td>
+        </tr>
+        <tr>
+          <th>Utilidad Neta</th>
+          <th id="utilidad">0.00</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <canvas id="graficoFinanzas" style="max-width:700px;margin:auto;"></canvas>
+</div>
+
+<script>
+// ============================
+// Cargar datos
+// ============================
+const ventas = JSON.parse(localStorage.getItem("ventas")) || [];
+const compras = JSON.parse(localStorage.getItem("compras")) || [];
+
+// ============================
+// Variables
+// ============================
+let ingresos = 0;
+let costos = 0;
+let gastosEnvio = 0;
+let otrosGastos = 0;
+let gastosComisiones = 0;
+
+// ============================
+// INGRESOS REALES
+// ============================
+ventas.forEach(v => {
+    if (v.tipoPago === "Contado") {
+        ingresos += Number(v.total) || 0;
+    } else if (v.tipoPago === "Crédito") {
+        ingresos += Number(v.prima) || 0;
+    }
+});
+
+// ============================
+// COSTOS DE COMPRAS + ENVÍOS
+// ============================
+compras.forEach(c => {
+    const cantidad = Number(c.cantidad) || 0;
+    const costo = Number(c.costo) || 0;
+
+    costos += cantidad * costo;
+    gastosEnvio += Number(c.gastoEnvio) || 0;
+});
+
+// ============================
+// COMISIONES DE VENDEDORES
+// ============================
+ventas.forEach(v => {
+    gastosComisiones += Number(v.comision || 0);
+});
+
+// ============================
+// UTILIDAD NETA REAL
+// ============================
+let utilidad =
+    ingresos -
+    costos -
+    gastosEnvio -
+    gastosComisiones -
+    otrosGastos;
+
+// ============================
+// Mostrar en tabla
+// ============================
+document.getElementById("ingresos").textContent = ingresos.toFixed(2);
+document.getElementById("costos").textContent = costos.toFixed(2);
+document.getElementById("gastosEnvio").textContent = gastosEnvio.toFixed(2);
+document.getElementById("otrosGastos").textContent = otrosGastos.toFixed(2);
+
+// ============================
+// Fila comisiones
+// ============================
+const tabla = document.querySelector("table tbody");
+let filaComision = document.getElementById("filaComisiones");
+
+if (!filaComision) {
+    filaComision = document.createElement("tr");
+    filaComision.id = "filaComisiones";
+    filaComision.innerHTML = `
+        <td>Gastos por Comisiones</td>
+        <td id="gastosComisiones">0.00</td>
+    `;
+    tabla.insertBefore(filaComision, tabla.lastElementChild);
+}
+
+document.getElementById("gastosComisiones").textContent =
+    gastosComisiones.toFixed(2);
+
+// ============================
+// Utilidad
+// ============================
+const utilidadCell = document.getElementById("utilidad");
+utilidadCell.textContent = utilidad.toFixed(2);
+utilidadCell.className = utilidad >= 0 ? "positive" : "negative";
+
+// ============================
+// Gráfico
+// ============================
+const ctx = document.getElementById("graficoFinanzas").getContext("2d");
+
+new Chart(ctx, {
+    type: "bar",
+    data: {
+        labels: [
+            "Ingresos",
+            "Costos",
+            "Comisiones",
+            "Gastos de Envío",
+            "Otros Gastos",
+            "Utilidad Neta"
+        ],
+        datasets: [{
+            label: "Monto ($)",
+            data: [
+                ingresos,
+                costos,
+                gastosComisiones,
+                gastosEnvio,
+                otrosGastos,
+                utilidad
+            ],
+            backgroundColor: [
+                "#27ae60",
+                "#e74c3c",
+                "#f1c40f",
+                "#e67e22",
+                "#8e44ad",
+                "#2980b9"
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo | Comercial G.A.</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{
+  margin:0;
+  font-family:'Poppins';
+  display:flex;
+  min-height:100vh;
+  background:linear-gradient(135deg,#0d1b2a,#1b263b,#415a77);
+  color:#fff;
+}
+.sidebar{
+  width:250px;
+  background:#0d1b2a;
+  padding-top:25px;
+  border-right:2px solid #f1c40f;
+}
+.sidebar a{
+  display:block;
+  width:90%;
+  margin:6px auto;
+  padding:12px;
+  text-align:center;
+  color:#fff;
+  text-decoration:none;
+  background:rgba(255,255,255,.06);
+  border-radius:8px;
+}
+.sidebar a:hover{
+  background:#f1c40f;
+  color:#1b263b;
+}
+
+.main-content{
+  flex:1;
+  display:flex;
+  justify-content:flex-start;
+  align-items:flex-start;
+  flex-direction:column;
+  padding:30px;
+}
+
+h1{
+  color:#f1c40f;
+  margin-bottom:20px;
+}
+
+.upload-section{
+  background:#1b263b;
+  padding:20px;
+  border-radius:12px;
+  width:100%;
+  max-width:700px;
+  margin-bottom:30px;
+  box-shadow:0 8px 20px rgba(0,0,0,.35);
+}
+
+.upload-section h2{
+  margin:0 0 15px 0;
+  color:#f1c40f;
+  font-size:20px;
+  text-align:center;
+}
+
+input[type="file"]{
+  display:block;
+  margin:0 auto 15px auto;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  background:#f1c40f;
+  color:#1b263b;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .3s ease;
+}
+
+input[type="file"]:hover{
+  background:#f39c12;
+}
+
+button{
+  padding:10px 15px;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  margin-bottom:15px;
+  background:#2980b9;
+  color:#fff;
+  transition:all .3s ease;
+}
+
+button:hover{
+  background:#3498db;
+}
+
+#catalogList{
+  list-style:none;
+  padding:0;
+  max-height:300px;
+  overflow-y:auto;
+}
+
+#catalogList li{
+  background:rgba(255,255,255,.1);
+  margin-bottom:10px;
+  padding:10px 15px;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:all .3s ease;
+}
+
+#catalogList li:hover{
+  background:#f1c40f;
+  color:#1b263b;
+}
+
+#catalogList a{
+  color:inherit;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.delete-btn{
+  background:#c0392b;
+  color:#fff;
+  border:none;
+  padding:5px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  transition:all .3s ease;
+}
+
+.delete-btn:hover{
+  background:#e74c3c;
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <a href="index.html">INICIO</a>
+  <a href="catalogo.html">CATÁLOGO</a>
+</div>
+
+<div class="main-content">
+  <h1>CATÁLOGO</h1>
+
+  <!-- ===== SECCIÓN DE SUBIDA ===== -->
+  <div class="upload-section">
+    <h2>Sube tus Catálogos en PDF</h2>
+    <input type="file" id="pdfUpload" accept=".pdf">
+    <button id="verCatalogosBtn">Ver Catálogos</button>
+    <ul id="catalogList" style="display:none;"></ul>
+  </div>
+</div>
+
+<script>
+// ===== LISTA DE CATÁLOGOS =====
+let catalogos = JSON.parse(localStorage.getItem("catalogos")) || [];
+
+// Convertir strings antiguos a objetos {name,data}
+catalogos = catalogos.map(cat => {
+  return (typeof cat === "string") ? {name: `Catálogo`, data: cat} : cat;
+});
+
+// DOM
+const catalogList = document.getElementById("catalogList");
+const pdfUpload = document.getElementById("pdfUpload");
+const verBtn = document.getElementById("verCatalogosBtn");
+
+// ===== FUNCION PARA MOSTRAR LOS CATALOGOS =====
+function mostrarCatalogos(){
+  catalogList.innerHTML = "";
+  if(catalogos.length === 0){
+    catalogList.innerHTML = "<li>No hay catálogos disponibles</li>";
+    return;
+  }
+
+  catalogos.forEach((cat, index) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <a href="#" onclick="abrirCatalogo(${index})">${cat.name}</a>
+      <div>
+        <button class="delete-btn" onclick="eliminarCatalogo(${index})">Eliminar</button>
+        <button class="delete-btn" style="background:#2980b9;margin-left:5px;" onclick="renombrarCatalogo(${index})">Renombrar</button>
+      </div>
+    `;
+    catalogList.appendChild(li);
+  });
+}
+
+// ===== FUNCION PARA ABRIR PDF EN NUEVA PESTAÑA =====
+function abrirCatalogo(index){
+  const base64pdf = catalogos[index].data;
+  const byteCharacters = atob(base64pdf.split(',')[1]);
+  const byteNumbers = new Array(byteCharacters.length);
+  for(let i=0; i<byteCharacters.length; i++){
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray], {type:'application/pdf'});
+  const blobUrl = URL.createObjectURL(blob);
+  window.open(blobUrl, '_blank');
+}
+
+// ===== SUBIR PDF =====
+pdfUpload.addEventListener("change", (e)=>{
+  const file = e.target.files[0];
+  if(file && file.type === "application/pdf"){
+    const reader = new FileReader();
+    reader.onload = function(){
+      const dataUrl = reader.result;
+      let name = prompt("Ingresa un nombre para este catálogo:", file.name.replace(".pdf",""));
+      if(!name) name = `Catálogo ${catalogos.length + 1}`;
+      catalogos.push({name: name, data: dataUrl});
+      localStorage.setItem("catalogos", JSON.stringify(catalogos));
+      alert("📄 Catálogo subido correctamente");
+      mostrarCatalogos();
+    };
+    reader.readAsDataURL(file);
+  } else {
+    alert("Por favor selecciona un archivo PDF válido.");
+  }
+  pdfUpload.value = "";
+});
+
+// ===== ELIMINAR CATALOGO =====
+function eliminarCatalogo(index){
+  if(confirm("¿Desea eliminar este catálogo?")){
+    catalogos.splice(index,1);
+    localStorage.setItem("catalogos", JSON.stringify(catalogos));
+    mostrarCatalogos();
+  }
+}
+
+// ===== RENOMBRAR CATALOGO =====
+function renombrarCatalogo(index){
+  const nuevoNombre = prompt("Ingresa el nuevo nombre del catálogo:", catalogos[index].name);
+  if(nuevoNombre && nuevoNombre.trim() !== ""){
+    catalogos[index].name = nuevoNombre.trim();
+    localStorage.setItem("catalogos", JSON.stringify(catalogos));
+    mostrarCatalogos();
+  }
+}
+
+// ===== BOTON VER CATALOGOS =====
+verBtn.addEventListener("click", ()=>{
+  if(catalogList.style.display === "none" || catalogList.style.display === ""){
+    catalogList.style.display = "block";
+  } else {
+    catalogList.style.display = "none";
+  }
+  mostrarCatalogos();
+});
+
+// ===== INICIALIZAR =====
+mostrarCatalogos();
+catalogList.style.display = "none"; // Oculto al iniciar
+
+</script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarjetas y Recibos | Comercial G.A.</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+/* ===== BODY ===== */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
+  color: #fff;
+  padding: 20px;
+}
+
+/* ===== TARJETA Y RECIBO ===== */
+.card {
+  background: #fdfdfd;
+  color: #1b263b;
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 40px;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  border-left: 6px solid #f1c40f;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+}
+
+/* ===== LOGO ===== */
+.card .logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  max-width: 100px;
+}
+
+/* ===== HEADER ===== */
+.header {
+  text-align: left;
+  margin-left: 130px; /* deja espacio para el logo */
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 26px;
+  color: #f1c40f;
+}
+
+.header span {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  margin-top: 4px;
+}
+
+/* ===== SUBTITLE ===== */
+.subtitle {
+  text-align: center;
+  font-weight: 700;
+  margin: 15px 0;
+  font-size: 18px;
+  color: #2980b9;
+  letter-spacing: 1px;
+}
+
+/* ===== FILAS ===== */
+.row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.label {
+  width: 140px;
+  font-weight: 600;
+  color: #333;
+}
+
+.line {
+  flex: 1;
+  border-bottom: 1px solid #bbb;
+  min-height: 20px;
+  background-color: #f9f9f9;
+}
+
+/* ===== TABLA ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+  background: #fff;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+table th {
+  background: #2980b9;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ===== FIRMA ===== */
+.signature {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 35px;
+}
+
+.signature div {
+  width: 40%;
+  text-align: center;
+}
+
+.signature span {
+  border-top: 1px solid #333;
+  display: block;
+  margin-top: 20px;
+  padding-top: 6px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* ===== NOTA ===== */
+.note {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #555;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column;
+  }
+  .label {
+    width: 100%;
+  }
+  .signature {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .header {
+    margin-left: 0;
+    text-align: center;
+  }
+  .card .logo {
+    position: relative;
+    display: block;
+    margin: 0 auto 10px auto;
+  }
+}
+
+/* ===== LOGO COMO MARCA DE AGUA ===== */
+.card .logo-watermark {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  max-width: 100px;
+  opacity: 0.08;  /* baja opacidad */
+  z-index: 0;      /* queda detrás de la información */
+  pointer-events: none; /* no interfiere con clicks */
+}
+
+/* Para que el contenido quede encima */
+.card .header,
+.card .subtitle,
+.card .row,
+.card table,
+.card .note {
+  position: relative;
+  z-index: 1;
+}
+
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- ================= TARJETA DE CONTROL ================= -->
+<div class="card">
+  <img src="img/logo3.png" alt="Logo Comercial G.A." class="logo-watermark">
+  <div class="header">
+    <h1>COMERCIAL G.A.</h1>
+    <span>García & Asociados</span>
+    <span>Tu satisfacción es nuestra mejor recomendación</span>
+  </div>
+
+  <div class="subtitle">TARJETA DE CONTROL DE PAGOS</div>
+
+  <div class="row">
+    <div class="label">N° Tarjeta:</div><div class="line"></div>
+    <div class="label">Precio $:</div><div class="line"></div>
+  </div>
+  <div class="row"><div class="label">Cliente:</div><div class="line"></div></div>
+  <div class="row">
+    <div class="label">N° Teléfono:</div><div class="line"></div>
+    <div class="label">N° DUI:</div><div class="line"></div>
+  </div>
+  <div class="row"><div class="label">Producto:</div><div class="line"></div></div>
+  <div class="row"><div class="label">Dirección:</div><div class="line"></div></div>
+  <div class="row"><div class="label">Plazo:</div><div class="line"></div></div>
+  <div class="row"><div class="label">Vendedor:</div><div class="line"></div></div>
+  <div class="row"><div class="label">Fecha de venta:</div><div class="line"></div></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Abono</th>
+        <th>Saldo</th>
+        <th>Fecha</th>
+        <th>Abono</th>
+        <th>Saldo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <strong>Nota:</strong> No se aceptan devoluciones ni cambios.  
+    Favor conservar esta tarjeta para control de pagos.
+  </div>
+</div>
+
+<!-- ================= RECIBO ================= -->
+<div class="card">
+  <img src="img/logo3.png" alt="Logo Comercial G.A." class="logo-watermark">
+  <div class="header">
+    <h1>COMERCIAL G.A.</h1>
+    <span>García & Asociados</span>
+    <span>Gracias por tu puntualidad, seguimos a tu servicio</span>
+  </div>
+
+  <div class="subtitle">RECIBO DE PAGO</div>
+
+  <div class="row"><div class="label">Recibo No.:</div><div class="line"></div></div>
+  <div class="row"><div class="label">Fecha:</div><div class="line"></div></div>
+  <div class="row"><div class="label">Recibí de:</div><div class="line"></div></div>
+  <div class="row"><div class="label">La suma de:</div><div class="line"></div></div>
+  <div class="row"><div class="label">Por concepto de:</div><div class="line"></div></div>
+  <div class="row"><div class="label">Saldo pendiente:</div><div class="line"></div></div>
+
+  <div class="signature">
+    <div>
+      <span>Firma del Cliente</span>
+    </div>
+    <div>
+      <span>Firma y Sello</span>
+    </div>
+  </div>
+
+  <div class="note">
+    Este recibo es válido únicamente con firma y sello de <strong>Comercial G.A.</strong>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

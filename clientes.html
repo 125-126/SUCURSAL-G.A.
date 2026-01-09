@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listado de Clientes | Comercial G.A.</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins';
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg,#0d1b2a,#1b263b,#415a77);
+  color: #fff;
+}
+
+.sidebar {
+  width: 250px;
+  background: #0d1b2a;
+  padding-top: 25px;
+  border-right: 2px solid #f1c40f;
+}
+
+.sidebar a {
+  display: block;
+  width: 90%;
+  margin: 6px auto;
+  padding: 12px;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  background: rgba(255,255,255,.06);
+  border-radius: 8px;
+}
+
+.sidebar a:hover {
+  background: #f1c40f;
+  color: #1b263b;
+}
+
+.main-content {
+  flex: 1;
+  padding: 40px;
+  overflow-x: auto;
+}
+
+h1 {
+  color: #f1c40f;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  background: rgba(255,255,255,.05);
+  table-layout: auto; /* Ajusta columnas al contenido */
+}
+
+th, td {
+  border: 1px solid rgba(255,255,255,.2);
+  padding: 6px 10px; /* Ajusta padding para que no quede demasiado grande */
+  text-align: center;
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+th {
+  background: #f1c40f;
+  color: #1b263b;
+}
+
+tr:hover {
+  background: rgba(255,255,255,.1);
+}
+
+.btn-delete {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background: #c0392b;
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <a href="index.html">INICIO</a>
+  <a href="clientes.html">LISTADO DE CLIENTES</a>
+  <a href="compras.html">COMPRAS</a>
+  <a href="ventas.html">VENTAS</a>
+</div>
+
+<div class="main-content">
+  <h1>LISTADO DE CLIENTES</h1>
+  <table id="tablaClientes">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Producto</th>
+        <th>Precio</th>
+        <th>Cantidad</th>
+        <th>Total</th>
+        <th>Saldo Actual</th>
+        <th>N° Tarjeta</th>
+        <th>Cliente</th>
+        <th>Teléfono</th>
+        <th>DUI</th>
+        <th>Dirección</th>
+        <th>Tipo de Pago</th>
+        <th>Prima</th>
+        <th>Cuotas</th>
+        <th>Plazo</th>
+       <th>Vendedor</th>
+<th>Comisión</th>
+<th>Fecha Venta</th>
+        <th>Observaciones</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+// ===============================
+// CARGAR VENTAS
+// ===============================
+let ventas = JSON.parse(localStorage.getItem("ventas")) || [];
+const tablaBody = document.querySelector("#tablaClientes tbody");
+
+// ===============================
+// CALCULAR SALDO REAL
+// ===============================
+function calcularSaldo(venta){
+  const total = Number(venta.precio) * Number(venta.cantidad);
+  const prima = Number(venta.prima || 0);
+  const abonos = venta.abonos || [];
+
+  const totalAbonos = abonos.reduce(
+    (suma, a) => suma + Number(a.monto),
+    0
+  );
+
+  return total - prima - totalAbonos;
+}
+
+// ===============================
+// MOSTRAR VENTAS
+// ===============================
+function mostrarVentas() {
+  tablaBody.innerHTML = "";
+
+  if(ventas.length === 0){
+    tablaBody.innerHTML = `
+      <tr>
+        <td colspan="20">No hay ventas registradas</td>
+      </tr>`;
+    return;
+  }
+
+  ventas.forEach((v,index)=>{
+    const total = v.precio * v.cantidad;
+    const saldo = calcularSaldo(v);
+
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${v.codigo}</td>
+      <td>${v.producto}</td>
+      <td>$${v.precio.toFixed(2)}</td>
+      <td>${v.cantidad}</td>
+      <td>$${total.toFixed(2)}</td>
+
+      <!-- 🔥 SALDO ACTUAL DINÁMICO -->
+      <td style="font-weight:800; color:${saldo > 0 ? '#e74c3c' : '#2ecc71'}">
+        $${saldo.toFixed(2)}
+      </td>
+
+      <td>${v.numTarjeta}</td>
+      <td>${v.cliente}</td>
+      <td>${v.telefono}</td>
+      <td>${v.dui}</td>
+      <td>${v.direccion}</td>
+      <td>${v.tipoPago}</td>
+      <td>$${Number(v.prima || 0).toFixed(2)}</td>
+      <td>$${Number(v.cuotas || 0).toFixed(2)}</td>
+      <td>${v.plazo}</td>
+      <td>${v.vendedor}</td>
+<td style="font-weight:700; color:#f1c40f;">
+  $${Number(v.comision || 0).toFixed(2)}
+</td>
+<td>${v.fechaVenta}</td>
+      <td>${v.observaciones}</td>
+      <td>
+        <button class="btn-delete" onclick="eliminarVenta(${index})">
+          Eliminar
+        </button>
+      </td>
+    `;
+    tablaBody.appendChild(fila);
+  });
+}
+
+// ===============================
+// ELIMINAR VENTA
+// ===============================
+function eliminarVenta(index){
+  if(confirm("¿Desea eliminar esta venta?")){
+    ventas.splice(index,1);
+    localStorage.setItem("ventas", JSON.stringify(ventas));
+    mostrarVentas();
+  }
+}
+
+// ===============================
+// INICIALIZAR
+// ===============================
+mostrarVentas();
+</script>
+
+
+</body>
+</html>
