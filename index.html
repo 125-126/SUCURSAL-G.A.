@@ -27,39 +27,37 @@ body{
   margin-bottom:20px;
   text-align:center;
 }
-.sidebar a, .sidebar button{
+.sidebar a{
   display:block;
   width:90%;
   margin:6px auto;
   padding:12px;
   text-align:center;
   background:rgba(255,255,255,.06);
-  border:none;
   border-radius:8px;
   color:#fff;
   font-weight:600;
-  cursor:pointer;
   text-decoration:none;
 }
-.sidebar a:hover, .sidebar button:hover{
+.sidebar a:hover{
   background:#f1c40f;
   color:#1b263b;
 }
-
 .main-content{
   flex:1;
   display:flex;
   justify-content:center;
   align-items:center;
-  position:relative;
 }
-
-h1{
-  color:#f1c40f;
-  font-size:2.5em;
+.btn{
+  background:linear-gradient(135deg,#f1c40f,#f39c12);
+  border:none;
+  padding:15px 25px;
+  border-radius:14px;
+  font-weight:800;
+  cursor:pointer;
+  margin:10px;
 }
-
-/* ===== MODAL ===== */
 .modal{
   position:fixed;
   inset:0;
@@ -71,540 +69,84 @@ h1{
 .modal-content{
   background:#fff;
   color:#000;
-  width:600px;
-  padding:20px;
-  border-radius:10px;
-}
-.modal h3{
-  text-align:center;
-  margin-bottom:15px;
-}
-.form-row{
-  display:flex;
-  gap:10px;
-  margin-bottom:8px;
-}
-label{
-  width:150px;
-  font-weight:600;
-}
-input{
-  flex:1;
-  padding:6px;
-}
-.modal-actions{
-  display:flex;
-  justify-content:space-between;
-  margin-top:15px;
-}
-
-.logo{
-  width:160px;
-  display:block;
-  margin:0 auto 15px auto;
-}
-
-.welcome-box{
-  position:relative;
-  text-align:center;
-  padding:60px;
-  width:100%;
-  height:100%;
-}
-
-
-.watermark{
-  position:absolute;
-  inset:0;                 /* ocupa todo el contenedor */
-  width:100%;
-  height:100%;
-  object-fit:contain;      /* mantiene proporción del logo */
-  opacity:0.05;            /* marca de agua suave */
-  z-index:0;
-  pointer-events:none;
-}
-
-.welcome-box h1,
-.welcome-box p{
-  position:relative;
-  z-index:1;
-}
-
-.sidebar button{
-  background:linear-gradient(135deg,#f1c40f,#f39c12);
-  color:#1b263b;
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  border:none;
-  border-radius:12px;
-  padding:14px;
-  margin-top:18px;
-  box-shadow:0 8px 18px rgba(241,196,15,.35);
-  transition:all .3s ease;
-}
-
-/* Hover */
-.sidebar button:hover{
-  transform:translateY(-2px) scale(1.02);
-  box-shadow:0 12px 28px rgba(241,196,15,.55);
-  background:linear-gradient(135deg,#f39c12,#f1c40f);
-}
-
-/* Click */
-.sidebar button:active{
-  transform:scale(.97);
-  box-shadow:0 4px 12px rgba(241,196,15,.4);
-}
-
-.sidebar button{
-  position:sticky;
-  bottom:20px;
-}
-
-.sidebar button::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  border-radius:12px;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);
-  opacity:0;
-  transition:.3s;
-}
-
-.sidebar button:hover::after{
-  opacity:1;
-}
-/* ===== BOTÓN PREMIUM REGISTRAR PAGO ===== */
-.btn-pago{
-  background:linear-gradient(135deg,#f1c40f,#f39c12) !important;
-  color:#1b263b !important;
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  border:none;
-  border-radius:14px;
-  padding:15px;
-  margin-top:18px;
-  box-shadow:0 10px 22px rgba(241,196,15,.45);
-  transition:all .3s ease;
-  position:sticky;
-  bottom:20px;
-}
-
-/* Hover */
-.btn-pago:hover{
-  transform:translateY(-3px) scale(1.03);
-  box-shadow:0 16px 34px rgba(241,196,15,.65);
-  background:linear-gradient(135deg,#f39c12,#f1c40f) !important;
-}
-
-/* Click */
-.btn-pago:active{
-  transform:scale(.96);
-  box-shadow:0 6px 14px rgba(241,196,15,.5);
-}
-
-/* Brillo */
-.btn-pago::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  border-radius:14px;
-  background:linear-gradient(120deg,transparent,rgba(255,255,255,.6),transparent);
-  opacity:0;
-  transition:.3s;
-}
-
-.btn-pago:hover::after{
-  opacity:1;
-}
-
-
-/* ===== FORMULARIO MODAL ===== */
-.modal-content{
-  background:#f9fafb;
-  color:#1b263b;
   width:420px;
-  padding:30px;
+  padding:25px;
   border-radius:16px;
-  box-shadow:0 20px 45px rgba(0,0,0,.35);
-  animation:fadeIn .3s ease;
 }
-
-.modal h3{
-  text-align:center;
-  margin-bottom:25px;
-  color:#1b263b;
-  font-weight:800;
-}
-
-/* Campos */
 .form-group{
-  display:flex;
-  flex-direction:column;
-  margin-bottom:15px;
+  margin-bottom:12px;
 }
-
-.form-group label{
-  font-weight:700;
-  margin-bottom:6px;
-}
-
 .form-group input{
-  padding:12px 14px;
-  border-radius:10px;
-  border:1.5px solid #ccc;
-  font-size:15px;
-  transition:.25s;
+  width:100%;
+  padding:10px;
 }
-
-/* Focus */
-.form-group input:focus{
-  outline:none;
-  border-color:#f1c40f;
-  box-shadow:0 0 0 3px rgba(241,196,15,.25);
+.table-wrap{
+  max-height:300px;
+  overflow:auto;
 }
-
-/* Inputs solo lectura */
-.form-group input[readonly]{
-  background:#eaecef;
-  color:#555;
+table{
+  width:100%;
+  border-collapse:collapse;
 }
-
-/* ===== BOTONES MODAL ===== */
-.modal-actions{
-  display:flex;
-  justify-content:space-between;
-  margin-top:25px;
-  gap:12px;
-}
-
-.btn-cancelar{
-  flex:1;
-  background:#bdc3c7;
-  color:#2c3e50;
-  font-weight:700;
-  border:none;
-  padding:12px;
-  border-radius:10px;
-  cursor:pointer;
-  transition:.25s;
-}
-
-.btn-cancelar:hover{
-  background:#aab0b5;
-}
-
-.btn-guardar{
-  flex:1;
-  background:linear-gradient(135deg,#27ae60,#2ecc71);
-  color:#fff;
-  font-weight:800;
-  border:none;
-  padding:12px;
-  border-radius:10px;
-  cursor:pointer;
-  transition:.25s;
-  box-shadow:0 8px 18px rgba(46,204,113,.45);
-}
-
-.btn-guardar:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 26px rgba(46,204,113,.6);
-}
-
-/* Animación */
-@keyframes fadeIn{
-  from{opacity:0; transform:scale(.95);}
-  to{opacity:1; transform:scale(1);}
-}
-
-
-#saldoPendiente{
-  font-weight:800;
-  color:#c0392b;
-  background:#fdecea;
-}
-
-
-#saldoPendiente{
-  background:#fdecea;
-  color:#c0392b;
-  font-weight:800;
-}
-
-#saldoRestante{
-  background:#eafaf1;
-  color:#1e8449;
-  font-weight:800;
-}
-
-.acciones-pago{
-  display:flex;
-  gap:20px;
-  justify-content:center;
-}
-
-/* BOTÓN ESTADO DE CUENTA */
-.btn-estado{
-  background:linear-gradient(135deg,#3498db,#2980b9);
-  color:#fff;
-  font-weight:800;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  border:none;
-  border-radius:14px;
-  padding:15px 22px;
-  box-shadow:0 10px 22px rgba(52,152,219,.45);
-  cursor:pointer;
-  transition:.3s;
-}
-
-.btn-estado:hover{
-  transform:translateY(-3px) scale(1.03);
-  box-shadow:0 16px 34px rgba(52,152,219,.65);
-}
-
-/* MODAL ESTADO DE CUENTA GRANDE */
-.modal-estado {
-  width: 90%;
-  max-width: 1000px;
-  padding: 30px;
-  border-radius: 20px;
-  background: #f9f9f9;
-  color: #1b263b;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-  overflow: hidden;
-}
-
-/* Contenedor de la tabla con scroll */
-.tabla-estado-wrapper {
-  max-height: 400px;
-  overflow-y: auto;
-  margin-top: 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-}
-
-/* Tabla estilizada */
-#tablaEstado {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-#tablaEstado th {
-  background: #2980b9;
-  color: #fff;
-  font-weight: 700;
-  padding: 10px;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  text-align: center;
-}
-
-#tablaEstado td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-}
-
-#tablaEstado tbody tr:hover {
-  background: #f1f1f1;
-}
-
-#tablaEstado tbody tr:nth-child(even) {
-  background: #fafafa;
-}
-
-  /* ===== RESPONSIVE PARA CELULAR ===== */
-@media (max-width: 768px) {
-  body {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    border-right: none;
-    border-bottom: 2px solid #f1c40f;
-    padding: 10px 0;
-  }
-
-  .sidebar a, .sidebar button {
-    width: 45%;
-    margin: 5px;
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .sidebar h2 {
-    width: 100%;
-    font-size: 1.5em;
-    margin-bottom: 10px;
-  }
-
-  .logo {
-    width: 120px;
-    margin-bottom: 10px;
-  }
-
-  .main-content {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 15px;
-  }
-
-  .welcome-box {
-    padding: 20px;
-  }
-
-  .acciones-pago {
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-  }
-
-  .btn-pago, .btn-estado {
-    width: 90%;
-    margin: 0 auto;
-  }
-
-  .modal-content {
-    width: 90%;
-    padding: 20px;
-  }
-
-  .modal-estado {
-    width: 95%;
-    max-width: 95%;
-    padding: 20px;
-  }
-
-  .tabla-estado-wrapper {
-    max-height: 300px;
-  }
-
-  #tablaEstado th, #tablaEstado td {
-    font-size: 12px;
-    padding: 6px;
-  }
+th,td{
+  border:1px solid #ccc;
+  padding:6px;
+  text-align:center;
 }
 </style>
-
-
 </head>
 
 <body>
-<!-- ===== SIDEBAR ===== -->
+
 <div class="sidebar">
-
-  <img src="logo3.png" alt="Logo Comercial G.A." class="logo">
-
   <h2>COMERCIAL G.A.</h2>
-
   <a href="index.html">INICIO</a>
-  <a href="clientes.html">LISTADO DE CLIENTES</a>
-  <a href="compras.html">COMPRAS</a>
   <a href="ventas.html">VENTAS</a>
-  <a href="inventario.html">INVENTARIO</a>
-  <a href="ingresos-gastos.html">INGRESOS Y GASTOS</a>
-  <a href="mora.html">MORA</a>
-  <a href="catalogo.html">CATÁLOGO</a>
-  <a href="tarjetas.html">TARJETAS Y RECIBOS</a>
-  <button onclick="exportarJSON()" style="margin-top:10px;">Exportar JSON</button>
 </div>
 
-<!-- ===== CONTENIDO PRINCIPAL ===== -->
 <div class="main-content">
-
-  <div class="welcome-box">
-    <img src="logo3.png" class="watermark" alt="Logo Marca de Agua">
-
-    <div class="acciones-pago">
-      <button class="btn-pago" onclick="abrirModal()">REGISTRAR PAGO</button>
-      <button class="btn-estado" onclick="abrirBusquedaEstado()">ESTADO DE CUENTA</button>
-    </div>
-
-  </div>
-
+  <button class="btn" onclick="abrirPago()">REGISTRAR PAGO</button>
+  <button class="btn" onclick="abrirEstado()">ESTADO DE CUENTA</button>
 </div>
 
-<!-- ===== MODAL REGISTRO DE PAGOS ===== -->
+<!-- MODAL PAGO -->
 <div class="modal" id="modalPago">
-
   <div class="modal-content">
-
-    <h3>💰 REGISTRAR PAGO</h3>
-
+    <h3>Registrar Pago</h3>
     <div class="form-group">
-      <label>N° Tarjeta</label>
-      <input id="numTarjeta" placeholder="Ingrese número de tarjeta">
+      <input id="numTarjeta" placeholder="Número de tarjeta">
     </div>
-
     <div class="form-group">
-      <label>Saldo Pendiente ($)</label>
-      <input id="saldoPendiente" readonly>
+      <input id="saldoPendiente" readonly placeholder="Saldo pendiente">
     </div>
-
     <div class="form-group">
-      <label>Monto Abono ($)</label>
-      <input type="number" id="abono" step="0.01" placeholder="0.00">
+      <input id="abono" type="number" placeholder="Abono">
     </div>
-
     <div class="form-group">
-      <label>Saldo Restante ($)</label>
-      <input id="saldoRestante" readonly>
+      <input id="saldoRestante" readonly placeholder="Saldo restante">
     </div>
-
-    <div class="modal-actions">
-      <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
-      <button class="btn-guardar" onclick="guardarPago()">Guardar Pago</button>
-    </div>
-
+    <button class="btn" onclick="guardarPago()">GUARDAR</button>
+    <button class="btn" onclick="cerrarPago()">CERRAR</button>
   </div>
-
 </div>
 
-<!-- ===== MODAL ESTADO DE CUENTA ===== -->
+<!-- MODAL ESTADO -->
 <div class="modal" id="modalEstado">
-
-  <div class="modal-content modal-estado">
-
-    <h3>📄 ESTADO DE CUENTA</h3>
-
+  <div class="modal-content">
+    <h3>Estado de Cuenta</h3>
     <div class="form-group">
-      <label>N° Tarjeta</label>
-      <input id="buscarTarjeta" placeholder="Ingrese número de tarjeta">
+      <input id="buscarTarjeta" placeholder="Número de tarjeta">
     </div>
-
-    <!-- TABLA ESTADO DE CUENTA -->
-    <div class="tabla-estado-wrapper">
-      <table id="tablaEstado">
+    <button class="btn" onclick="buscarEstado()">BUSCAR</button>
+    <div class="table-wrap">
+      <table>
         <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Producto</th>
-            <th>Detalle</th>
-            <th>Debe</th>
-            <th>Abono</th>
-            <th>Saldo</th>
-          </tr>
+          <tr><th>Fecha</th><th>Detalle</th><th>Abono</th><th>Saldo</th></tr>
         </thead>
-        <tbody></tbody>
+        <tbody id="tablaEstado"></tbody>
       </table>
     </div>
-
-    <div class="modal-actions">
-      <button class="btn-cancelar" onclick="cerrarEstado()">Cerrar</button>
-      <button class="btn-guardar" onclick="buscarEstadoCuenta()">Buscar</button>
-    </div>
-
+    <button class="btn" onclick="cerrarEstado()">CERRAR</button>
   </div>
 </div>
 
@@ -613,9 +155,6 @@ input{
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
-/* ===============================
-   FIREBASE CONFIG
-================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyAfZ0WZVzMxUX2bWmP-iJ0SB-r4q9r026g",
   authDomain: "sucursal-ga.firebaseapp.com",
@@ -626,225 +165,91 @@ const firebaseConfig = {
   appId: "1:692794208494:web:9ef044edad3263926943ff"
 };
 
-// Inicializar Firebase
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const db = firebase.database();
 
-/* ===============================
-   VARIABLES GLOBALES
-================================ */
 let ventas = [];
 let ventaActual = null;
 
-/* ===============================
-   CARGAR VENTAS EN TIEMPO REAL
-================================ */
-database.ref("ventas").on("value", snapshot => {
-  const data = snapshot.val() || {};
-  ventas = Object.values(data);
+/* CARGA CORRECTA */
+db.ref("ventas").on("value", snap => {
+  const data = snap.val() || {};
+  ventas = Object.keys(data).map(id => ({
+    id,
+    ...data[id]
+  }));
 });
-/* ===== ELEMENTOS DOM ===== */
-const modalPago = document.getElementById("modalPago");
-const modalEstado = document.getElementById("modalEstado");
 
-const numTarjeta = document.getElementById("numTarjeta");
-const saldoPendiente = document.getElementById("saldoPendiente");
-const saldoRestante = document.getElementById("saldoRestante");
-const abono = document.getElementById("abono");
-const buscarTarjeta = document.getElementById("buscarTarjeta");
+/* MODALES */
+function abrirPago(){ document.getElementById("modalPago").style.display="flex"; }
+function cerrarPago(){ document.getElementById("modalPago").style.display="none"; }
+function abrirEstado(){ document.getElementById("modalEstado").style.display="flex"; }
+function cerrarEstado(){ document.getElementById("modalEstado").style.display="none"; }
 
-/* ===============================
-   MODAL PAGO
-================================ */
-function abrirModal(){
-  modalPago.style.display = "flex";
-  limpiarFormulario();
-}
-
-function cerrarModal(){
-  modalPago.style.display = "none";
-  limpiarFormulario();
-}
-
-function limpiarFormulario(){
-  numTarjeta.value = "";
-  saldoPendiente.value = "";
-  saldoRestante.value = "";
-  abono.value = "";
-  ventaActual = null;
-}
-
-/* ===============================
-   CALCULAR SALDO
-================================ */
-function calcularSaldo(venta){
-  const total = Number(venta.precio) * Number(venta.cantidad);
-  const prima = Number(venta.prima || 0);
-  const abonos = venta.abonos || [];
-
-  const totalAbonos = abonos.reduce(
-    (suma, a) => suma + Number(a.monto),
-    0
-  );
-
-  return total - prima - totalAbonos;
-}
-
-/* ===============================
-   BUSCAR TARJETA
-================================ */
-numTarjeta.addEventListener("change", () => {
+/* BUSCAR TARJETA */
+document.getElementById("numTarjeta").addEventListener("change", ()=>{
   const num = numTarjeta.value.trim();
+  ventaActual = ventas.find(v => v.numTarjeta === num);
+  if(!ventaActual){ alert("No existe"); return; }
 
-  ventaActual = ventas.find(
-    v => v.numTarjeta === num && v.tipoPago === "Crédito"
-  );
+  const total = Number(ventaActual.total);
+  const abonos = ventaActual.abonos || [];
+  const pagado = abonos.reduce((s,a)=>s+Number(a.monto),0);
+  const saldo = total - pagado;
 
-  if(!ventaActual){
-    alert("❌ Tarjeta no encontrada");
-    limpiarFormulario();
-    return;
-  }
-
-  const saldo = calcularSaldo(ventaActual);
-
-  if(saldo <= 0){
-    saldoPendiente.value = "0.00";
-    saldoRestante.value = "0.00";
-    alert("✅ Esta tarjeta ya está cancelada");
-    ventaActual = null;
-    return;
-  }
-
-  saldoPendiente.value = saldo.toFixed(2);
-  saldoRestante.value = saldo.toFixed(2);
+  saldoPendiente.value = saldo;
+  saldoRestante.value = saldo;
 });
 
-/* ===============================
-   SALDO RESTANTE EN VIVO
-================================ */
-abono.addEventListener("input", () => {
-  if(!ventaActual) return;
-
-  const monto = Number(abono.value) || 0;
-  const saldo = Number(saldoPendiente.value);
-  const restante = saldo - monto;
-
-  if(restante < 0){
-    saldoRestante.value = "Monto excede el saldo";
-  } else {
-    saldoRestante.value = restante.toFixed(2);
-  }
+/* CALCULO */
+abono.addEventListener("input", ()=>{
+  saldoRestante.value = saldoPendiente.value - abono.value;
 });
 
-/* ===============================
-   GUARDAR PAGO (FIREBASE)
-================================ */
+/* GUARDAR */
 function guardarPago(){
-  if(!ventaActual){
-    alert("⚠️ Primero busque una tarjeta válida");
-    return;
+  if(!ventaActual) return alert("Busque tarjeta");
+
+  if(!ventaActual.id){
+    ventaActual.id = Date.now().toString();
   }
 
-  const monto = Number(abono.value);
-  const saldo = Number(saldoPendiente.value);
-
-  if(monto <= 0 || monto > saldo){
-    alert("⚠️ Monto inválido");
-    return;
-  }
-
-  if(!ventaActual.abonos){
-    ventaActual.abonos = [];
-  }
-
+  if(!ventaActual.abonos) ventaActual.abonos = [];
   ventaActual.abonos.push({
-    fecha: new Date().toISOString(),
-    monto: monto
+    fecha: new Date().toLocaleDateString(),
+    monto: Number(abono.value)
   });
 
-  // 🔥 GUARDAR EN FIREBASE
-  database.ref("ventas/" + ventaActual.id).set(ventaActual);
-
-  alert("✅ Pago registrado correctamente");
-  cerrarModal();
+  db.ref("ventas/"+ventaActual.id).set(ventaActual);
+  alert("PAGO GUARDADO");
+  cerrarPago();
 }
 
-/* ===============================
-   ESTADO DE CUENTA
-================================ */
-function abrirBusquedaEstado(){
-  modalEstado.style.display = "flex";
-}
-
-function cerrarEstado(){
-  modalEstado.style.display = "none";
-  buscarTarjeta.value = "";
-  document.querySelector("#tablaEstado tbody").innerHTML = "";
-}
-
-function buscarEstadoCuenta(){
+/* ESTADO */
+function buscarEstado(){
   const num = buscarTarjeta.value.trim();
+  const venta = ventas.find(v=>v.numTarjeta===num);
+  if(!venta) return alert("No existe");
 
-  const venta = ventas.find(
-    v => v.numTarjeta === num && v.tipoPago === "Crédito"
-  );
+  const tbody = document.getElementById("tablaEstado");
+  tbody.innerHTML="";
+  let saldo = venta.total;
 
-  if(!venta){
-    alert("❌ Tarjeta no encontrada");
-    return;
-  }
-
-  mostrarEstadoCuenta(venta);
-}
-
-/* ===============================
-   MOSTRAR ESTADO DE CUENTA
-================================ */
-function mostrarEstadoCuenta(venta) {
-  const tbody = document.querySelector("#tablaEstado tbody");
-  tbody.innerHTML = "";
-
-  const producto = venta.producto || "Producto";
-  let saldo = Number(venta.precio) * Number(venta.cantidad);
-
-  const trVenta = document.createElement("tr");
-  trVenta.innerHTML = `
-    <td>${new Date().toLocaleDateString()}</td>
-    <td>${producto}</td>
-    <td>Venta</td>
-    <td>${saldo.toFixed(2)}</td>
-    <td>0.00</td>
-    <td>${saldo.toFixed(2)}</td>
-  `;
-  tbody.appendChild(trVenta);
-
-  if (venta.prima) {
-    saldo -= Number(venta.prima);
-  }
-
-  if (venta.abonos) {
-    venta.abonos.forEach(a => {
-      saldo -= Number(a.monto);
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${new Date(a.fecha).toLocaleDateString()}</td>
-        <td>${producto}</td>
-        <td>Abono</td>
-        <td></td>
-        <td>${Number(a.monto).toFixed(2)}</td>
-        <td>${saldo.toFixed(2)}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  modalEstado.style.display = "flex";
+  (venta.abonos||[]).forEach(a=>{
+    saldo -= a.monto;
+    tbody.innerHTML += `<tr>
+      <td>${a.fecha}</td>
+      <td>Abono</td>
+      <td>${a.monto}</td>
+      <td>${saldo}</td>
+    </tr>`;
+  });
 }
 </script>
-  
+
 </body>
 </html>
+
 
 
 
