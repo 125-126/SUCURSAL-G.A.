@@ -142,6 +142,56 @@ button:hover{
 .delete-btn:hover{
   background:#e74c3c;
 }
+  /* ===== AJUSTES PARA CELULAR ===== */
+@media (max-width: 600px) {
+  body {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px 0;
+  }
+
+  .sidebar a {
+    width: 45%;
+    margin: 5px 2%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .main-content {
+    padding: 15px 10px;
+  }
+
+  .upload-section {
+    width: 100%;
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  #catalogList li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  #catalogList li div button {
+    margin-top: 5px;
+    width: 100%;
+  }
+
+  button, input[type="file"] {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+}
 </style>
 </head>
 <body>
@@ -268,4 +318,5 @@ catalogList.style.display = "none"; // Oculto al iniciar
 
 </script>
 </body>
+
 </html>
