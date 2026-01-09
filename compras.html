@@ -320,7 +320,32 @@ button{
 </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
 <script>
+/* ===============================
+   FIREBASE CONFIG
+================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAfZ0WZVzMxUX2bWmP-iJ0SB-r4q9r026g",
+  authDomain: "sucursal-ga.firebaseapp.com",
+  databaseURL: "https://sucursal-ga-default-rtdb.firebaseio.com",
+  projectId: "sucursal-ga",
+  storageBucket: "sucursal-ga.appspot.com",
+  messagingSenderId: "692794208494",
+  appId: "1:692794208494:web:9ef044edad3263926943ff"
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const database = firebase.database();
+
+/* ===============================
+   ELEMENTOS
+================================ */
 const fecha = document.getElementById("fecha");
 const factura = document.getElementById("factura");
 const proveedor = document.getElementById("proveedor");
@@ -336,81 +361,89 @@ const precioVenta = document.getElementById("precioVenta");
 const gastoEnvio = document.getElementById("gastoEnvio");
 const obs = document.getElementById("obs");
 
-// 🔢 CALCULAR TOTAL AUTOMÁTICO
+/* ===============================
+   CALCULAR TOTAL
+================================ */
 function calcularTotal() {
   const subtotal = Number(cantidad.value) * Number(costo.value);
   const ivaValor = Number(iva.value) || 0;
 
-  if (!isNaN(subtotal) && subtotal > 0) {
+  if (subtotal > 0) {
     total.value = (subtotal + subtotal * ivaValor / 100).toFixed(2);
   } else {
     total.value = "";
   }
 }
 
-// 💾 GUARDAR COMPRA / INVENTARIO
+/* ===============================
+   GUARDAR COMPRA
+================================ */
 function guardarCompra() {
-  let inventario = JSON.parse(localStorage.getItem("inventario")) || [];
-  let compras = JSON.parse(localStorage.getItem("compras")) || [];
-
-  let productoExistente = inventario.find(
-    item => item.producto.toLowerCase() === producto.value.toLowerCase()
-  );
-
-  let codigoProducto;
-
-  if (productoExistente) {
-    codigoProducto = productoExistente.codigo;
-productoExistente.cantidad += Number(cantidad.value);
-productoExistente.precio = Number(costo.value);
-productoExistente.precioVenta = Number(precioVenta.value);
-productoExistente.ubicacion = ubicacion.value;
-productoExistente.gastoEnvio =
-  (Number(productoExistente.gastoEnvio) || 0) + Number(gastoEnvio.value || 0);
-productoExistente.factura = factura.value;
-  } else {
-    let nuevoCodigo = "001";
-    if (inventario.length > 0) {
-      const codigos = inventario.map(p => Number(p.codigo));
-      nuevoCodigo = String(Math.max(...codigos) + 1).padStart(3, "0");
-    }
-
-    codigoProducto = nuevoCodigo;
-
-  inventario.push({
-  factura: factura.value,
-  codigo: nuevoCodigo,
-  producto: producto.value,
-  cantidad: Number(cantidad.value),
-  precio: Number(costo.value),
-  gastoEnvio: Number(gastoEnvio.value) || 0,
-  precioVenta: Number(precioVenta.value),
-  ubicacion: ubicacion.value
-});
+  if (!producto.value || !cantidad.value || !costo.value) {
+    alert("⚠️ Complete los campos obligatorios");
+    return;
   }
 
-  // 📦 REGISTRO DE COMPRA CON GASTO DE ENVÍO
-  compras.push({
+  const compra = {
     fecha: fecha.value,
     factura: factura.value,
     proveedor: proveedor.value,
     formaPago: pago.value,
     producto: producto.value,
+    categoria: categoria.value,
     cantidad: Number(cantidad.value),
     costo: Number(costo.value),
+    iva: Number(iva.value),
     total: Number(total.value),
     gastoEnvio: Number(gastoEnvio.value) || 0,
-    observaciones: obs.value
+    observaciones: obs.value,
+    fechaRegistro: new Date().toISOString()
+  };
+
+  // 🔹 Guardar compra
+  const compraRef = database.ref("compras").push();
+  compraRef.set(compra);
+
+  // 🔹 Actualizar inventario
+  database.ref("inventario").once("value", snapshot => {
+    const data = snapshot.val() || {};
+    let encontrado = false;
+
+    for (let id in data) {
+      if (data[id].producto.toLowerCase() === producto.value.toLowerCase()) {
+        database.ref("inventario/" + id).update({
+          cantidad: Number(data[id].cantidad) + Number(cantidad.value),
+          precio: Number(costo.value),
+          precioVenta: Number(precioVenta.value),
+          ubicacion: ubicacion.value,
+          gastoEnvio: (Number(data[id].gastoEnvio) || 0) + Number(gastoEnvio.value || 0),
+          factura: factura.value
+        });
+        encontrado = true;
+        break;
+      }
+    }
+
+    if (!encontrado) {
+      database.ref("inventario").push({
+        factura: factura.value,
+        producto: producto.value,
+        categoria: categoria.value,
+        cantidad: Number(cantidad.value),
+        precio: Number(costo.value),
+        gastoEnvio: Number(gastoEnvio.value) || 0,
+        precioVenta: Number(precioVenta.value),
+        ubicacion: ubicacion.value
+      });
+    }
+
+    alert("✅ Compra registrada correctamente");
+    window.location.href = "inventario.html";
   });
-
-  localStorage.setItem("inventario", JSON.stringify(inventario));
-  localStorage.setItem("compras", JSON.stringify(compras));
-
-  alert(`✅ Compra registrada | Código ${codigoProducto}`);
-  window.location.href = "inventario.html";
 }
 </script>
 </body>
 
 </html>
+
 
