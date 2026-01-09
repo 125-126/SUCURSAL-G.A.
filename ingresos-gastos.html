@@ -21,6 +21,98 @@ th{background:#f1c40f;color:#1b263b;text-align:left}
 tr:hover{background:rgba(255,255,255,.1)}
 .positive{color:#27ae60;font-weight:600;}
 .negative{color:#e74c3c;font-weight:600;}
+/* ===== RESPONSIVE PARA CELULAR ===== */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-right: none;
+    border-bottom: 2px solid #f1c40f;
+    padding: 10px 0;
+  }
+
+  .sidebar h2 {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  .sidebar a {
+    width: 45%;
+    margin: 5px;
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.3em;
+  }
+
+  .table-container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  /* TABLA CONVERTIDA A TARJETAS */
+  table {
+    display: block;
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    display: block;
+    background: rgba(255,255,255,.05);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,.2);
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #f1c40f;
+    flex: 1;
+    text-align: left;
+  }
+
+  tbody td:last-child {
+    border-bottom: none;
+  }
+
+  /* GRAFICO */
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+  }
+}
+  
 </style>
 </head>
 <body>
@@ -127,11 +219,30 @@ let utilidad =
 // ============================
 // Mostrar en tabla
 // ============================
-document.getElementById("ingresos").textContent = ingresos.toFixed(2);
-document.getElementById("costos").textContent = costos.toFixed(2);
-document.getElementById("gastosEnvio").textContent = gastosEnvio.toFixed(2);
-document.getElementById("otrosGastos").textContent = otrosGastos.toFixed(2);
+// Obtener tbody
+const tablaBody = document.querySelector("table tbody");
+tablaBody.innerHTML = "";
 
+// Crear filas dinámicas con data-label
+const filas = [
+  ["Ingresos por Ventas", ingresos],
+  ["Costos de Compras", costos],
+  ["Gastos de Envío", gastosEnvio],
+  ["Gastos por Comisiones", gastosComisiones],
+  ["Otros Gastos", otrosGastos],
+  ["Utilidad Neta", utilidad]
+];
+
+filas.forEach(fila => {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td data-label="Concepto">${fila[0]}</td>
+    <td data-label="Monto ($)" class="${fila[1] >= 0 ? 'positive' : 'negative'}">
+      ${fila[1].toFixed(2)}
+    </td>
+  `;
+  tablaBody.appendChild(tr);
+});
 // ============================
 // Fila comisiones
 // ============================
@@ -203,4 +314,5 @@ new Chart(ctx, {
 </script>
 
 </body>
+
 </html>
