@@ -85,6 +85,86 @@ tr:hover {
 .btn-delete:hover {
   background: #c0392b;
 }
+
+  /* ===== RESPONSIVE PARA CELULAR ===== */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-right: none;
+    border-bottom: 2px solid #f1c40f;
+    padding: 10px 0;
+  }
+
+  .sidebar a {
+    width: 45%;
+    margin: 5px;
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    padding: 15px;
+    overflow-x: auto; /* permite scroll horizontal si es necesario */
+  }
+
+  h1 {
+    font-size: 1.3em;
+  }
+
+  table {
+    width: 100%;
+    display: block; /* hace que la tabla se adapte */
+  }
+
+  thead {
+    display: none; /* oculta encabezado en móvil */
+  }
+
+  tbody tr {
+    display: block;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,.05);
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,.2);
+    white-space: normal;
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #f1c40f;
+    flex: 1;
+    text-align: left;
+  }
+
+  tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .btn-delete {
+    width: 100%;
+    margin-top: 5px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -165,45 +245,38 @@ function mostrarVentas() {
   }
 
   ventas.forEach((v,index)=>{
-    const total = v.precio * v.cantidad;
-    const saldo = calcularSaldo(v);
+  const total = v.precio * v.cantidad;
+  const saldo = calcularSaldo(v);
 
-    const fila = document.createElement("tr");
-    fila.innerHTML = `
-      <td>${v.codigo}</td>
-      <td>${v.producto}</td>
-      <td>$${v.precio.toFixed(2)}</td>
-      <td>${v.cantidad}</td>
-      <td>$${total.toFixed(2)}</td>
-
-      <!-- 🔥 SALDO ACTUAL DINÁMICO -->
-      <td style="font-weight:800; color:${saldo > 0 ? '#e74c3c' : '#2ecc71'}">
-        $${saldo.toFixed(2)}
-      </td>
-
-      <td>${v.numTarjeta}</td>
-      <td>${v.cliente}</td>
-      <td>${v.telefono}</td>
-      <td>${v.dui}</td>
-      <td>${v.direccion}</td>
-      <td>${v.tipoPago}</td>
-      <td>$${Number(v.prima || 0).toFixed(2)}</td>
-      <td>$${Number(v.cuotas || 0).toFixed(2)}</td>
-      <td>${v.plazo}</td>
-      <td>${v.vendedor}</td>
-<td style="font-weight:700; color:#f1c40f;">
-  $${Number(v.comision || 0).toFixed(2)}
-</td>
-<td>${v.fechaVenta}</td>
-      <td>${v.observaciones}</td>
-      <td>
-        <button class="btn-delete" onclick="eliminarVenta(${index})">
-          Eliminar
-        </button>
-      </td>
-    `;
-    tablaBody.appendChild(fila);
-  });
+  const fila = document.createElement("tr");
+  fila.innerHTML = `
+    <td data-label="Código">${v.codigo}</td>
+    <td data-label="Producto">${v.producto}</td>
+    <td data-label="Precio">$${v.precio.toFixed(2)}</td>
+    <td data-label="Cantidad">${v.cantidad}</td>
+    <td data-label="Total">$${total.toFixed(2)}</td>
+    <td data-label="Saldo Actual" style="font-weight:800; color:${saldo > 0 ? '#e74c3c' : '#2ecc71'}">
+      $${saldo.toFixed(2)}
+    </td>
+    <td data-label="N° Tarjeta">${v.numTarjeta}</td>
+    <td data-label="Cliente">${v.cliente}</td>
+    <td data-label="Teléfono">${v.telefono}</td>
+    <td data-label="DUI">${v.dui}</td>
+    <td data-label="Dirección">${v.direccion}</td>
+    <td data-label="Tipo de Pago">${v.tipoPago}</td>
+    <td data-label="Prima">$${Number(v.prima || 0).toFixed(2)}</td>
+    <td data-label="Cuotas">$${Number(v.cuotas || 0).toFixed(2)}</td>
+    <td data-label="Plazo">${v.plazo}</td>
+    <td data-label="Vendedor">${v.vendedor}</td>
+    <td data-label="Comisión" style="font-weight:700; color:#f1c40f;">$${Number(v.comision || 0).toFixed(2)}</td>
+    <td data-label="Fecha Venta">${v.fechaVenta}</td>
+    <td data-label="Observaciones">${v.observaciones}</td>
+    <td data-label="Acción">
+      <button class="btn-delete" onclick="eliminarVenta(${index})">Eliminar</button>
+    </td>
+  `;
+  tablaBody.appendChild(fila);
+});
 }
 
 // ===============================
@@ -225,4 +298,5 @@ mostrarVentas();
 
 
 </body>
+
 </html>
