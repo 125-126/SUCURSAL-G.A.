@@ -207,16 +207,38 @@ tr:hover {
   </table>
 </div>
 
-<script>
-// ===============================
-// CARGAR VENTAS
-// ===============================
-let ventas = JSON.parse(localStorage.getItem("ventas")) || [];
-const tablaBody = document.querySelector("#tablaClientes tbody");
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
-// ===============================
-// CALCULAR SALDO REAL
-// ===============================
+<script>
+/* ===============================
+   FIREBASE CONFIG
+================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAfZ0WZVzMxUX2bWmP-iJ0SB-r4q9r026g",
+  authDomain: "sucursal-ga.firebaseapp.com",
+  databaseURL: "https://sucursal-ga-default-rtdb.firebaseio.com",
+  projectId: "sucursal-ga",
+  storageBucket: "sucursal-ga.appspot.com",
+  messagingSenderId: "692794208494",
+  appId: "1:692794208494:web:9ef044edad3263926943ff"
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+const database = firebase.database();
+
+/* ===============================
+   VARIABLES GLOBALES
+================================ */
+const tablaBody = document.querySelector("#tablaClientes tbody");
+let ventas = [];
+
+/* ===============================
+   CALCULAR SALDO REAL
+================================ */
 function calcularSaldo(venta){
   const total = Number(venta.precio) * Number(venta.cantidad);
   const prima = Number(venta.prima || 0);
@@ -230,13 +252,13 @@ function calcularSaldo(venta){
   return total - prima - totalAbonos;
 }
 
-// ===============================
-// MOSTRAR VENTAS
-// ===============================
+/* ===============================
+   MOSTRAR VENTAS
+================================ */
 function mostrarVentas() {
   tablaBody.innerHTML = "";
 
-  if(ventas.length === 0){
+  if (ventas.length === 0) {
     tablaBody.innerHTML = `
       <tr>
         <td colspan="20">No hay ventas registradas</td>
@@ -244,59 +266,72 @@ function mostrarVentas() {
     return;
   }
 
-  ventas.forEach((v,index)=>{
-  const total = v.precio * v.cantidad;
-  const saldo = calcularSaldo(v);
+  ventas.forEach(v => {
+    const total = Number(v.precio) * Number(v.cantidad);
+    const saldo = calcularSaldo(v);
 
-  const fila = document.createElement("tr");
-  fila.innerHTML = `
-    <td data-label="Código">${v.codigo}</td>
-    <td data-label="Producto">${v.producto}</td>
-    <td data-label="Precio">$${v.precio.toFixed(2)}</td>
-    <td data-label="Cantidad">${v.cantidad}</td>
-    <td data-label="Total">$${total.toFixed(2)}</td>
-    <td data-label="Saldo Actual" style="font-weight:800; color:${saldo > 0 ? '#e74c3c' : '#2ecc71'}">
-      $${saldo.toFixed(2)}
-    </td>
-    <td data-label="N° Tarjeta">${v.numTarjeta}</td>
-    <td data-label="Cliente">${v.cliente}</td>
-    <td data-label="Teléfono">${v.telefono}</td>
-    <td data-label="DUI">${v.dui}</td>
-    <td data-label="Dirección">${v.direccion}</td>
-    <td data-label="Tipo de Pago">${v.tipoPago}</td>
-    <td data-label="Prima">$${Number(v.prima || 0).toFixed(2)}</td>
-    <td data-label="Cuotas">$${Number(v.cuotas || 0).toFixed(2)}</td>
-    <td data-label="Plazo">${v.plazo}</td>
-    <td data-label="Vendedor">${v.vendedor}</td>
-    <td data-label="Comisión" style="font-weight:700; color:#f1c40f;">$${Number(v.comision || 0).toFixed(2)}</td>
-    <td data-label="Fecha Venta">${v.fechaVenta}</td>
-    <td data-label="Observaciones">${v.observaciones}</td>
-    <td data-label="Acción">
-      <button class="btn-delete" onclick="eliminarVenta(${index})">Eliminar</button>
-    </td>
-  `;
-  tablaBody.appendChild(fila);
-});
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td data-label="Código">${v.codigo || ""}</td>
+      <td data-label="Producto">${v.producto || ""}</td>
+      <td data-label="Precio">$${Number(v.precio).toFixed(2)}</td>
+      <td data-label="Cantidad">${v.cantidad}</td>
+      <td data-label="Total">$${total.toFixed(2)}</td>
+      <td data-label="Saldo Actual" style="font-weight:800; color:${saldo > 0 ? '#e74c3c' : '#2ecc71'}">
+        $${saldo.toFixed(2)}
+      </td>
+      <td data-label="N° Tarjeta">${v.numTarjeta || ""}</td>
+      <td data-label="Cliente">${v.cliente || ""}</td>
+      <td data-label="Teléfono">${v.telefono || ""}</td>
+      <td data-label="DUI">${v.dui || ""}</td>
+      <td data-label="Dirección">${v.direccion || ""}</td>
+      <td data-label="Tipo de Pago">${v.tipoPago || ""}</td>
+      <td data-label="Prima">$${Number(v.prima || 0).toFixed(2)}</td>
+      <td data-label="Cuotas">$${Number(v.cuotas || 0).toFixed(2)}</td>
+      <td data-label="Plazo">${v.plazo || ""}</td>
+      <td data-label="Vendedor">${v.vendedor || ""}</td>
+      <td data-label="Comisión" style="font-weight:700; color:#f1c40f;">
+        $${Number(v.comision || 0).toFixed(2)}
+      </td>
+      <td data-label="Fecha Venta">${v.fechaVenta || ""}</td>
+      <td data-label="Observaciones">${v.observaciones || ""}</td>
+      <td data-label="Acción">
+        <button class="btn-delete" onclick="eliminarVenta('${v.id}')">Eliminar</button>
+      </td>
+    `;
+    tablaBody.appendChild(fila);
+  });
 }
 
-// ===============================
-// ELIMINAR VENTA
-// ===============================
-function eliminarVenta(index){
-  if(confirm("¿Desea eliminar esta venta?")){
-    ventas.splice(index,1);
-    localStorage.setItem("ventas", JSON.stringify(ventas));
-    mostrarVentas();
+/* ===============================
+   ELIMINAR VENTA (REAL)
+================================ */
+function eliminarVenta(id){
+  if (confirm("¿Desea eliminar esta venta?")) {
+    database.ref("ventas/" + id).remove();
   }
 }
 
-// ===============================
-// INICIALIZAR
-// ===============================
-mostrarVentas();
+/* ===============================
+   CARGAR VENTAS DESDE FIREBASE
+================================ */
+database.ref("ventas").on("value", snapshot => {
+  const data = snapshot.val() || {};
+  ventas = [];
+
+  for (let id in data) {
+    ventas.push({
+      id,
+      ...data[id]
+    });
+  }
+
+  mostrarVentas();
+});
 </script>
 
 
 </body>
 
 </html>
+
