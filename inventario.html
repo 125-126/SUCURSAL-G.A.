@@ -170,6 +170,93 @@ tr:hover{
   margin-top:10px;
   cursor:pointer;
 }
+/* ===== RESPONSIVE PARA CELULAR ===== */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-right: none;
+    border-bottom: 2px solid #f1c40f;
+    padding: 10px 0;
+  }
+
+  .sidebar a {
+    width: 45%;
+    margin: 5px;
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    padding: 15px;
+    overflow-x: auto; /* Scroll horizontal opcional */
+  }
+
+  h1 {
+    font-size: 1.3em;
+  }
+
+  /* TABLA CONVERTIDA A TARJETAS */
+  table {
+    width: 100%;
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    display: block;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,.05);
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,.2);
+    white-space: normal;
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #f1c40f;
+    flex: 1;
+    text-align: left;
+  }
+
+  tbody td:last-child {
+    border-bottom: none;
+  }
+
+  /* BOTONES */
+  .btn-delete {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  /* MODAL */
+  .modal-content {
+    width: 90%;
+    max-width: 95%;
+    padding: 20px;
+  }
+}
 
 </style>
 </head>
@@ -264,25 +351,23 @@ function mostrarInventario() {
 
     const fila = document.createElement("tr");
 
-    fila.innerHTML = `
-      <td>${factura}</td>
-      <td>${codigo}</td>
-      <td>${producto}</td>
-      <td>${cantidad}</td>
-      <td>$${precioUnit.toFixed(2)}</td>
-      <td>$${costoEnvio.toFixed(2)}</td>
-      <td style="color:#2ecc71;font-weight:700">$${costoRealUnit.toFixed(2)}</td>
-      <td>$${totalCompra.toFixed(2)}</td>
-      <td>$${precioVenta.toFixed(2)}</td>
-      <td>$${comision.toFixed(2)}</td>
-      <td style="font-weight:700;color:${ganancia >= 0 ? '#2ecc71' : '#e74c3c'}">
-        $${ganancia.toFixed(2)}
-      </td>
-      <td>${item.ubicacion || ""}</td>
-      <td>
-        <button class="btn-delete" onclick="eliminar(${index})">Eliminar</button>
-      </td>
-    `;
+   fila.innerHTML = `
+  <td data-label="Factura">${factura}</td>
+  <td data-label="Código">${codigo}</td>
+  <td data-label="Producto">${producto}</td>
+  <td data-label="Cantidad">${cantidad}</td>
+  <td data-label="Precio Unit.">$${precioUnit.toFixed(2)}</td>
+  <td data-label="Costo Envío">$${costoEnvio.toFixed(2)}</td>
+  <td data-label="Costo Real" style="color:#2ecc71;font-weight:700">$${costoRealUnit.toFixed(2)}</td>
+  <td data-label="Total Compra">$${totalCompra.toFixed(2)}</td>
+  <td data-label="Precio Venta">$${precioVenta.toFixed(2)}</td>
+  <td data-label="Comisión">$${comision.toFixed(2)}</td>
+  <td data-label="Ganancia" style="font-weight:700;color:${ganancia >= 0 ? '#2ecc71' : '#e74c3c'}">$${ganancia.toFixed(2)}</td>
+  <td data-label="Ubicación">${item.ubicacion || ""}</td>
+  <td data-label="Acción">
+    <button class="btn-delete" onclick="eliminar(${index})">Eliminar</button>
+  </td>
+`;
 
     tablaBody.appendChild(fila);
   });
@@ -364,4 +449,5 @@ mostrarInventario();
 </div>
 
 </body>
+
 </html>
