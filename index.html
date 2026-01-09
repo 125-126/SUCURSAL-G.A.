@@ -517,7 +517,7 @@ input{
   <a href="mora.html">MORA</a>
   <a href="catalogo.html">CATÁLOGO</a>
   <a href="tarjetas.html">TARJETAS Y RECIBOS</a>
-
+  <button onclick="exportarJSON()" style="margin-top:10px;">Exportar JSON</button>
 </div>
 
 <!-- ===== CONTENIDO PRINCIPAL ===== -->
@@ -612,7 +612,21 @@ input{
 /* ===============================
    VARIABLES GLOBALES
 ================================ */
-const ventas = JSON.parse(localStorage.getItem("ventas")) || [];
+let ventas = []; // variable global
+
+// ===== FUNCION PARA CARGAR VENTAS DESDE GITHUB =====
+async function cargarVentas() {
+  try {
+    const response = await fetch('ventas.json');
+    ventas = await response.json();
+  } catch (error) {
+    console.error("Error cargando ventas:", error);
+    ventas = [];
+  }
+}
+
+// Cargar al iniciar
+cargarVentas();
 let ventaActual = null;
 
 /* ===== ELEMENTOS DOM ===== */
@@ -740,7 +754,7 @@ function guardarPago(){
     monto: monto
   });
 
-  localStorage.setItem("ventas", JSON.stringify(ventas));
+ alert("✅ Pago registrado correctamente.\n⚠️ Para que otros vean este pago, sube el archivo ventas.json actualizado a GitHub.");
 
   alert("✅ Pago registrado correctamente");
   cerrarModal();
@@ -841,11 +855,18 @@ function mostrarEstadoCuenta(venta) {
   // Abrir modal automáticamente
   modalEstado.style.display = "flex";
 }
-
+function exportarJSON() {
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(ventas, null, 2));
+  const dlAnchorElem = document.createElement('a');
+  dlAnchorElem.setAttribute("href", dataStr);
+  dlAnchorElem.setAttribute("download", "ventas.json");
+  dlAnchorElem.click();
+}
 </script>
 
 </body>
 </html>
+
 
 
 
