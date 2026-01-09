@@ -4,108 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ventas | Comercial G.A.</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Poppins',Arial,sans-serif;min-height:100vh;display:flex;background:linear-gradient(135deg,#0d1b2a,#1b263b,#415a77);color:#fff}
-.sidebar{width:250px;background:#0d1b2a;padding-top:25px;border-right:2px solid #f1c40f;display:flex;flex-direction:column;align-items:center;}
-.sidebar h2{color:#f1c40f;margin-bottom:25px;font-weight:800;}
-.sidebar a{width:90%;margin:6px 0;padding:12px;text-align:center;text-decoration:none;color:#fff;background:rgba(255,255,255,.06);border-radius:8px;font-weight:600;}
-.sidebar a:hover{background:#f1c40f;color:#1b263b;}
-.main-content{flex:1;padding:40px;overflow-y:auto;}
-h1{color:#f1c40f;margin-bottom:20px;text-align:center;}
-.form-container{max-width:900px;margin:auto;background:rgba(255,255,255,.05);padding:30px;border-radius:15px;}
-.section-title{margin:25px 0 10px;font-weight:600;color:#f1c40f;border-bottom:1px solid rgba(241,196,15,.4);}
-.form-row{display:flex;gap:15px;margin-bottom:15px;}
-.form-group{flex:1;display:flex;flex-direction:column;}
-label{margin-bottom:5px;font-size:.9em;}
-input, select, textarea{padding:10px;border-radius:8px;border:none;font-family:'Poppins';}
-textarea{resize:none;}
-.buttons{display:flex;gap:15px;margin-top:25px;}
-button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:600;cursor:pointer;}
-.btn-save{background:#27ae60;color:#fff;}
-.btn-cancel{background:#c0392b;color:#fff;}
-#obs{width:100%;min-height:100px;padding:15px;border-radius:12px;font-size:1em;line-height:1.5;}
-.info-box{background:rgba(255,255,255,.1);padding:15px;border-radius:10px;margin-bottom:15px;}/* ===== RESPONSIVE PARA CELULAR ===== */
-@media (max-width: 768px) {
-  body {
-    flex-direction: column;
-  }
+.sidebar{width:250px;background:#0d1b2a;padding-top:25px;border-right:2px solid #f1c40f;display:flex;flex-direction:column;align-items:center}
+.sidebar h2{color:#f1c40f;margin-bottom:25px;font-weight:800}
+.sidebar a{width:90%;margin:6px 0;padding:12px;text-align:center;text-decoration:none;color:#fff;background:rgba(255,255,255,.06);border-radius:8px;font-weight:600}
+.sidebar a:hover{background:#f1c40f;color:#1b263b}
+.main-content{flex:1;padding:40px;overflow-y:auto}
+h1{color:#f1c40f;margin-bottom:20px;text-align:center}
+.form-container{max-width:900px;margin:auto;background:rgba(255,255,255,.05);padding:30px;border-radius:15px}
+.section-title{margin:25px 0 10px;font-weight:600;color:#f1c40f;border-bottom:1px solid rgba(241,196,15,.4)}
+.form-row{display:flex;gap:15px;margin-bottom:15px}
+.form-group{flex:1;display:flex;flex-direction:column}
+label{margin-bottom:5px;font-size:.9em}
+input,select,textarea{padding:10px;border-radius:8px;border:none;font-family:'Poppins'}
+textarea{resize:none}
+.buttons{display:flex;gap:15px;margin-top:25px}
+button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:600;cursor:pointer}
+.btn-save{background:#27ae60;color:#fff}
+.btn-cancel{background:#c0392b;color:#fff}
+.info-box{background:rgba(255,255,255,.1);padding:15px;border-radius:10px;margin-bottom:15px}
 
-  /* SIDEBAR */
-  .sidebar {
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    border-right: none;
-    border-bottom: 2px solid #f1c40f;
-    padding: 10px 0;
-  }
-
-  .sidebar h2 {
-    width: 100%;
-    text-align: center;
-    font-size: 1.5em;
-    margin-bottom: 10px;
-  }
-
-  .sidebar a {
-    width: 45%;
-    margin: 5px;
-    font-size: 14px;
-    padding: 10px;
-    text-align: center;
-  }
-
-  /* MAIN CONTENT */
-  .main-content {
-    flex: 1;
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.3em;
-  }
-
-  .form-container {
-    padding: 20px;
-    width: 100%;
-  }
-
-  /* FORMULARIOS */
-  .form-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .form-group {
-    width: 100%;
-  }
-
-  input, select, textarea, button {
-    width: 100%;
-  }
-
-  /* INFO PRODUCTO */
-  .info-box {
-    padding: 15px;
-    font-size: 0.95em;
-  }
-
-  /* BOTONES */
-  .buttons {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .buttons button {
-    width: 100%;
-  }
+@media(max-width:768px){
+body{flex-direction:column}
+.sidebar{width:100%;flex-direction:row;flex-wrap:wrap;justify-content:center;border-right:none;border-bottom:2px solid #f1c40f}
+.sidebar a{width:45%}
+.main-content{padding:15px}
+.form-row{flex-direction:column}
+.buttons{flex-direction:column}
 }
-  
 </style>
 </head>
+
 <body>
 
 <div class="sidebar">
@@ -118,12 +52,13 @@ button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:600;cursor
 
 <div class="main-content">
 <h1>Registro de Ventas</h1>
+
 <div class="form-container">
 
 <div class="section-title">Buscar Producto por Código</div>
 <div class="form-row">
   <div class="form-group">
-    <label>Código del Producto</label>
+    <label>Código</label>
     <input type="text" id="codigoBuscar">
   </div>
   <div class="form-group">
@@ -131,89 +66,48 @@ button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:600;cursor
   </div>
 </div>
 
-<div id="infoProducto" class="info-box" style="display:none;">
+<div id="infoProducto" class="info-box" style="display:none">
   <p><strong>Producto:</strong> <span id="infoNombre"></span></p>
-  <p><strong>Stock disponible:</strong> <span id="infoStock"></span></p>
-  <p><strong>Precio unitario:</strong> $<span id="infoPrecio"></span></p>
-  <p>
-    <label>Cantidad a vender:</label>
-    <input type="number" id="cantidadVenta" min="1" value="1" oninput="calcularTotalVenta()">
-  </p>
-  <p><strong>Total a pagar:</strong> $<span id="totalVenta">0.00</span></p>
+  <p><strong>Stock:</strong> <span id="infoStock"></span></p>
+  <p><strong>Precio:</strong> $<span id="infoPrecio"></span></p>
+
+  <label>Cantidad</label>
+  <input type="number" id="cantidadVenta" min="1" value="1" oninput="calcularTotal()">
+
+  <p><strong>Total:</strong> $<span id="totalVenta">0.00</span></p>
 </div>
 
 <div class="section-title">Datos de la Venta</div>
+
 <div class="form-row">
-  <div class="form-group">
-    <label>N° Tarjeta</label>
-    <input type="text" id="numTarjeta">
-  </div>
   <div class="form-group">
     <label>Cliente</label>
     <input type="text" id="cliente">
-  </div>
-</div>
-
-<div class="form-row">
-  <div class="form-group">
-    <label>N° Teléfono</label>
-    <input type="text" id="telefono">
-  </div>
-  <div class="form-group">
-    <label>N° DUI</label>
-    <input type="text" id="dui">
-  </div>
-</div>
-
-<div class="form-row">
-  <div class="form-group">
-    <label>Dirección</label>
-    <input type="text" id="direccion">
   </div>
   <div class="form-group">
     <label>Vendedor</label>
     <input type="text" id="vendedor">
   </div>
 </div>
-  <div class="form-group">
-    <label>Comisión del vendedor (10%)</label>
-    <input type="text" id="comisionVendedor" readonly>
-  </div>
-</div>
 
 <div class="form-row">
   <div class="form-group">
-    <label>Tipo de pago</label>
+    <label>Tipo de Pago</label>
     <select id="tipoPago">
       <option>Contado</option>
       <option>Crédito</option>
     </select>
   </div>
   <div class="form-group">
-    <label>Prima ($)</label>
-    <input type="number" id="prima" value="0" step="0.01">
+    <label>Prima</label>
+    <input type="number" id="prima" value="0">
   </div>
 </div>
 
 <div class="form-row">
   <div class="form-group">
-    <label>Cuotas ($)</label>
-    <input type="number" id="cuotas" value="0" step="0.01">
-  </div>
-  <div class="form-group">
-    <label>Plazo</label>
-    <input type="text" id="plazo">
-  </div>
-</div>
-
-<div class="form-row">
-  <div class="form-group">
-    <label>Fecha de Venta</label>
+    <label>Fecha</label>
     <input type="date" id="fechaVenta">
-  </div>
-  <div class="form-group">
-    <label>Observaciones</label>
-    <textarea id="obs"></textarea>
   </div>
 </div>
 
@@ -225,154 +119,90 @@ button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:600;cursor
 </div>
 </div>
 
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
 <script>
-// ============================
-// Cargar inventario y ventas
-// ============================
-let inventario = JSON.parse(localStorage.getItem("inventario")) || [];
-let ventas = JSON.parse(localStorage.getItem("ventas")) || [];
+const firebaseConfig = {
+  apiKey: "AIzaSyAfZ0WZVzMxUX2bWmP-iJ0SB-r4q9r026g",
+  authDomain: "sucursal-ga.firebaseapp.com",
+  databaseURL: "https://sucursal-ga-default-rtdb.firebaseio.com",
+  projectId: "sucursal-ga"
+};
 
-// ============================
-// Buscar producto por código
-// ============================
-function buscarProducto() {
-    const codigo = document.getElementById("codigoBuscar").value.trim();
-    const producto = inventario.find(p => p.codigo === codigo);
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-    if (producto) {
-        document.getElementById("infoProducto").style.display = "block";
-        document.getElementById("infoNombre").textContent = producto.producto;
-        document.getElementById("infoStock").textContent = producto.cantidad;
-        document.getElementById("infoPrecio").textContent = producto.precioVenta.toFixed(2);
-        calcularTotalVenta();
-    } else {
-        alert("Producto no encontrado");
-        document.getElementById("infoProducto").style.display = "none";
+let productoActual = null;
+
+/* ================= BUSCAR PRODUCTO ================= */
+function buscarProducto(){
+  const codigo = document.getElementById("codigoBuscar").value.trim();
+
+  db.ref("inventario").once("value", snap=>{
+    productoActual = null;
+
+    snap.forEach(child=>{
+      if(child.val().codigo === codigo){
+        productoActual = { id: child.key, ...child.val() };
+      }
+    });
+
+    if(!productoActual){
+      alert("Producto no encontrado");
+      return;
     }
+
+    document.getElementById("infoProducto").style.display="block";
+    document.getElementById("infoNombre").textContent = productoActual.producto;
+    document.getElementById("infoStock").textContent = productoActual.cantidad;
+    document.getElementById("infoPrecio").textContent = productoActual.precioVenta;
+    calcularTotal();
+  });
 }
 
-// ============================
-// Calcular total y comisión
-// ============================
-function calcularTotalVenta() {
-    const precio = Number(document.getElementById("infoPrecio").textContent) || 0;
-    const cantidad = Number(document.getElementById("cantidadVenta").value) || 1;
-
-    const total = precio * cantidad;
-    const comision = total * 0.10;
-
-    document.getElementById("totalVenta").textContent = total.toFixed(2);
-    document.getElementById("comisionVendedor").value = comision.toFixed(2);
+/* ================= CALCULAR TOTAL ================= */
+function calcularTotal(){
+  const cant = Number(document.getElementById("cantidadVenta").value);
+  const total = cant * Number(productoActual.precioVenta);
+  document.getElementById("totalVenta").textContent = total.toFixed(2);
 }
 
-// ============================
-// Guardar venta
-// ============================
-function guardarVenta() {
-    const codigo = document.getElementById("codigoBuscar").value.trim();
-    const producto = inventario.find(p => p.codigo === codigo);
-    const cantidad = Number(document.getElementById("cantidadVenta").value);
-    const totalVenta = Number(document.getElementById("totalVenta").textContent);
-    const comisionVendedor = totalVenta * 0.10;
-    const tipoPago = document.getElementById("tipoPago").value;
-    const primaInput = Number(document.getElementById("prima").value);
-    const fechaVenta = document.getElementById("fechaVenta").value;
+/* ================= GUARDAR VENTA ================= */
+function guardarVenta(){
+  if(!productoActual) return alert("Busque un producto");
+  const cantidad = Number(cantidadVenta.value);
+  if(cantidad > productoActual.cantidad) return alert("Stock insuficiente");
 
-    // Validaciones
-    if (!producto) {
-        alert("Seleccione un producto válido antes de registrar la venta.");
-        return;
-    }
+  const total = Number(document.getElementById("totalVenta").textContent);
+  const tipoPago = tipoPagoSelect.value;
+  const prima = tipoPago === "Contado" ? total : Number(primaInput.value);
+  const saldo = total - prima;
 
-    if (cantidad <= 0 || cantidad > producto.cantidad) {
-        alert("Cantidad inválida o superior al stock disponible.");
-        return;
-    }
+  const venta = {
+    codigo: productoActual.codigo,
+    producto: productoActual.producto,
+    cantidad,
+    total,
+    tipoPago,
+    prima,
+    saldo,
+    cliente: cliente.value,
+    vendedor: vendedor.value,
+    fecha: fechaVenta.value,
+    fechaRegistro: new Date().toISOString()
+  };
 
-    if (!fechaVenta) {
-        alert("Seleccione la fecha de la venta.");
-        return;
-    }
+  db.ref("ventas").push(venta);
+  db.ref("inventario/"+productoActual.id).update({
+    cantidad: productoActual.cantidad - cantidad
+  });
 
-    if (tipoPago === "Crédito" && (primaInput < 0 || primaInput > totalVenta)) {
-        alert("La prima no puede ser mayor al total de la venta.");
-        return;
-    }
-
-    // ============================
-    // Lógica contable
-    // ============================
-    let prima = primaInput;
-    let saldoPendiente = totalVenta - primaInput;
-
-    if (tipoPago === "Contado") {
-        prima = totalVenta;
-        saldoPendiente = 0;
-    }
-
-    // ============================
-    // Crear objeto venta
-    // ============================
-    const venta = {
-        codigo: producto.codigo,
-        producto: producto.producto,
-        precio: Number(producto.precioVenta),
-        cantidad: cantidad,
-        total: totalVenta,
-        comision: comisionVendedor,
-        tipoPago: tipoPago,
-        prima: prima,
-        saldoPendiente: saldoPendiente,
-
-        numTarjeta: document.getElementById("numTarjeta").value,
-        cliente: document.getElementById("cliente").value,
-        telefono: document.getElementById("telefono").value,
-        dui: document.getElementById("dui").value,
-        direccion: document.getElementById("direccion").value,
-        cuotas: Number(document.getElementById("cuotas").value),
-        plazo: document.getElementById("plazo").value,
-        vendedor: document.getElementById("vendedor").value,
-        fechaVenta: fechaVenta,
-        observaciones: document.getElementById("obs").value
-    };
-
-    // ============================
-    // Actualizar inventario
-    // ============================
-    producto.cantidad -= cantidad;
-    localStorage.setItem("inventario", JSON.stringify(inventario));
-
-    // ============================
-    // Guardar venta
-    // ============================
-    ventas.push(venta);
-    localStorage.setItem("ventas", JSON.stringify(ventas));
-
-    alert("✅ Venta registrada correctamente");
-
-    // ============================
-    // Limpiar formulario
-    // ============================
-    document.getElementById("codigoBuscar").value = "";
-    document.getElementById("infoProducto").style.display = "none";
-    document.getElementById("cantidadVenta").value = 1;
-    document.getElementById("totalVenta").textContent = "0.00";
-    document.getElementById("comisionVendedor").value = "";
-    document.getElementById("numTarjeta").value = "";
-    document.getElementById("cliente").value = "";
-    document.getElementById("telefono").value = "";
-    document.getElementById("dui").value = "";
-    document.getElementById("direccion").value = "";
-    document.getElementById("tipoPago").value = "Contado";
-    document.getElementById("prima").value = 0;
-    document.getElementById("cuotas").value = 0;
-    document.getElementById("plazo").value = "";
-    document.getElementById("vendedor").value = "";
-    document.getElementById("fechaVenta").value = "";
-    document.getElementById("obs").value = "";
+  alert("✅ Venta registrada correctamente");
+  location.reload();
 }
 </script>
+
 </body>
-
 </html>
-
