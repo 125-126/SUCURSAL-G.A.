@@ -619,8 +619,9 @@ input{
 const firebaseConfig = {
   apiKey: "AIzaSyAfZ0WZVzMxUX2bWmP-iJ0SB-r4q9r026g",
   authDomain: "sucursal-ga.firebaseapp.com",
+  databaseURL: "https://sucursal-ga-default-rtdb.firebaseio.com",
   projectId: "sucursal-ga",
-  storageBucket: "sucursal-ga.firebasestorage.app",
+  storageBucket: "sucursal-ga.appspot.com",
   messagingSenderId: "692794208494",
   appId: "1:692794208494:web:9ef044edad3263926943ff"
 };
@@ -639,9 +640,9 @@ let ventaActual = null;
    CARGAR VENTAS EN TIEMPO REAL
 ================================ */
 database.ref("ventas").on("value", snapshot => {
-  ventas = snapshot.val() || [];
+  const data = snapshot.val() || {};
+  ventas = Object.values(data);
 });
-
 /* ===== ELEMENTOS DOM ===== */
 const modalPago = document.getElementById("modalPago");
 const modalEstado = document.getElementById("modalEstado");
@@ -763,7 +764,7 @@ function guardarPago(){
   });
 
   // 🔥 GUARDAR EN FIREBASE
-  database.ref("ventas").set(ventas);
+  database.ref("ventas/" + ventaActual.id).set(ventaActual);
 
   alert("✅ Pago registrado correctamente");
   cerrarModal();
@@ -844,6 +845,7 @@ function mostrarEstadoCuenta(venta) {
   
 </body>
 </html>
+
 
 
 
