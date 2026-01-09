@@ -129,15 +129,16 @@ button{
   line-height:1.5;
 }
 
-/* ===== RESPONSIVE PARA CELULAR ===== */
+/* ===== RESPONSIVE CELULAR ===== */
 @media (max-width: 768px) {
   body {
     flex-direction: column;
   }
 
+  /* SIDEBAR */
   .sidebar {
     width: 100%;
-    display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     border-right: none;
@@ -145,64 +146,59 @@ button{
     padding: 10px 0;
   }
 
-  .sidebar a, .sidebar button {
+  .sidebar h2 {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  .sidebar a {
     width: 45%;
     margin: 5px;
     font-size: 14px;
     padding: 10px;
   }
 
-  .sidebar h2 {
-    width: 100%;
-    font-size: 1.5em;
-    margin-bottom: 10px;
-  }
-
-  .logo {
-    width: 120px;
-    margin-bottom: 10px;
-  }
-
+  /* MAIN CONTENT */
   .main-content {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    flex: 1;
     padding: 15px;
   }
 
-  .welcome-box {
+  .form-container {
     padding: 20px;
-  }
-
-  .acciones-pago {
-    flex-direction: column;
-    gap: 10px;
     width: 100%;
   }
 
-  .btn-pago, .btn-estado {
-    width: 90%;
-    margin: 0 auto;
+  /* FORMULARIOS */
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .modal-content {
-    width: 90%;
-    padding: 20px;
+  .form-group {
+    width: 100%;
   }
 
-  .modal-estado {
-    width: 95%;
-    max-width: 95%;
-    padding: 20px;
+  input, select, textarea {
+    width: 100%;
   }
 
-  .tabla-estado-wrapper {
-    max-height: 300px;
+  /* BOTONES */
+  .buttons {
+    flex-direction: column;
+    gap: 10px;
   }
 
-  #tablaEstado th, #tablaEstado td {
-    font-size: 12px;
-    padding: 6px;
+  .buttons button {
+    width: 100%;
+  }
+
+  /* OBSERVACIONES */
+  #obs {
+    min-height: 120px;
+    font-size: 0.95em;
   }
 }
 
@@ -417,3 +413,4 @@ productoExistente.factura = factura.value;
 </body>
 
 </html>
+
