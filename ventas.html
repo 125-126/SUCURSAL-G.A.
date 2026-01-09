@@ -26,7 +26,84 @@ button{flex:1;padding:12px;border:none;border-radius:10px;font-weight:600;cursor
 .btn-save{background:#27ae60;color:#fff;}
 .btn-cancel{background:#c0392b;color:#fff;}
 #obs{width:100%;min-height:100px;padding:15px;border-radius:12px;font-size:1em;line-height:1.5;}
-.info-box{background:rgba(255,255,255,.1);padding:15px;border-radius:10px;margin-bottom:15px;}
+.info-box{background:rgba(255,255,255,.1);padding:15px;border-radius:10px;margin-bottom:15px;}/* ===== RESPONSIVE PARA CELULAR ===== */
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-right: none;
+    border-bottom: 2px solid #f1c40f;
+    padding: 10px 0;
+  }
+
+  .sidebar h2 {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+
+  .sidebar a {
+    width: 45%;
+    margin: 5px;
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    flex: 1;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.3em;
+  }
+
+  .form-container {
+    padding: 20px;
+    width: 100%;
+  }
+
+  /* FORMULARIOS */
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-group {
+    width: 100%;
+  }
+
+  input, select, textarea, button {
+    width: 100%;
+  }
+
+  /* INFO PRODUCTO */
+  .info-box {
+    padding: 15px;
+    font-size: 0.95em;
+  }
+
+  /* BOTONES */
+  .buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+}
+  
 </style>
 </head>
 <body>
@@ -296,4 +373,5 @@ function guardarVenta() {
 }
 </script>
 </body>
+
 </html>
